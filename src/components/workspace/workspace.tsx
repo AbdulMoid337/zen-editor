@@ -34,6 +34,9 @@ const Workspace = ({ note }: { note: Note }) => {
         case "highlight":
           chain.toggleHighlight().run();
           break;
+        case "paragraph":
+          chain.setParagraph().run();
+          break;
         case "blockquote":
           chain.toggleBlockquote().run();
           break;
@@ -64,6 +67,26 @@ const Workspace = ({ note }: { note: Note }) => {
         case "alignJustify":
           chain.setTextAlign("justify").run();
           break;
+        case "heading1":
+          chain.toggleHeading({ level: 1 }).run();
+          break;
+        case "heading2":
+          chain.toggleHeading({ level: 2 }).run();
+          break;
+        case "heading3":
+          chain.toggleHeading({ level: 3 }).run();
+          break;
+        case "heading4":
+          chain.toggleHeading({ level: 4 }).run();
+          break;
+        case "heading5":
+          chain.toggleHeading({ level: 5 }).run();
+          break;
+        case "heading6":
+          chain.toggleHeading({ level: 6 }).run();
+          break;
+        default:
+          break;
       }
     },
     [editor]
@@ -79,7 +102,7 @@ const Workspace = ({ note }: { note: Note }) => {
       />
 
       <Toolbar editor={editor} onToggle={toggle} />
-      <EditorContent className="prose prose-lg max-w-full w-full break-word overflow-x-auto" editor={editor} />
+      <EditorContent className="tiptap prose prose-lg max-w-full w-full break-word overflow-x-auto" editor={editor} />
     </ScrollArea>
   );
 };

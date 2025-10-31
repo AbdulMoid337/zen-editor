@@ -11,6 +11,13 @@ import {
   AlignCenter,
   AlignRight,
   AlignJustify,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Heading5,
+  Heading6,
+  Text,
 } from "lucide-react";
 
 export const TOOLBAR_ACTIONS = [
@@ -65,6 +72,19 @@ export const TOOLBAR_ACTIONS = [
     activeClass: "bg-yellow-400 dark:text-black text-white",
     inactiveClass:
       "bg-yellow-100 dark:bg-yellow-300 text-black hover:bg-yellow-200",
+  },
+  {
+    key: "paragraph",
+    label: "Paragraph",
+    icon: Text,
+    shortcut: {
+      mac: "Cmd+Shift+P",
+      win: "Ctrl+Shift+P",
+      linux: "Ctrl+Shift+P",
+    },
+    activeClass: "bg-slate-900 text-white",
+    inactiveClass:
+      "bg-slate-100 dark:bg-slate-300 text-black hover:bg-slate-200",
   },
   {
     key: "blockquote",
@@ -184,6 +204,84 @@ export const TOOLBAR_ACTIONS = [
     inactiveClass:
       "bg-slate-100 dark:bg-slate-300 text-black hover:bg-slate-200",
   },
+  {
+    key: "heading1",
+    label: "Heading 1",
+    icon: Heading1,
+    shortcut: {
+      mac: "Cmd+Shift+1",
+      win: "Ctrl+Shift+1",
+      linux: "Ctrl+Shift+1",
+    },
+    activeClass: "bg-slate-900 text-white",
+    inactiveClass:
+      "bg-slate-100 dark:bg-slate-300 text-black hover:bg-slate-200",
+  },
+  {
+    key: "heading2",
+    label: "Heading 2",
+    icon: Heading2,
+    shortcut: {
+      mac: "Cmd+Shift+2",
+      win: "Ctrl+Shift+2",
+      linux: "Ctrl+Shift+2",
+    },
+    activeClass: "bg-slate-900 text-white",
+    inactiveClass:
+      "bg-slate-100 dark:bg-slate-300 text-black hover:bg-slate-200",
+  },
+  {
+    key: "heading3",
+    label: "Heading 3",
+    icon: Heading3,
+    shortcut: {
+      mac: "Cmd+Shift+3",
+      win: "Ctrl+Shift+3",
+      linux: "Ctrl+Shift+3",
+    },
+    activeClass: "bg-slate-900 text-white",
+    inactiveClass:
+      "bg-slate-100 dark:bg-slate-300 text-black hover:bg-slate-200",
+  },
+  {
+    key: "heading4",
+    label: "Heading 4",
+    icon: Heading4,
+    shortcut: {
+      mac: "Cmd+Shift+4",
+      win: "Ctrl+Shift+4",
+      linux: "Ctrl+Shift+4",
+    },
+    activeClass: "bg-slate-900 text-white",
+    inactiveClass:
+      "bg-slate-100 dark:bg-slate-300 text-black hover:bg-slate-200",
+  },
+  {
+    key: "heading5",
+    label: "Heading 5",
+    icon: Heading5,
+    shortcut: {
+      mac: "Cmd+Shift+5",
+      win: "Ctrl+Shift+5",
+      linux: "Ctrl+Shift+5",
+    },
+    activeClass: "bg-slate-900 text-white",
+    inactiveClass:
+      "bg-slate-100 dark:bg-slate-300 text-black hover:bg-slate-200",
+    },
+  {
+    key: "heading6",
+    label: "Heading 6",
+    icon: Heading6,
+    shortcut: {
+      mac: "Cmd+Shift+6",
+      win: "Ctrl+Shift+6",
+      linux: "Ctrl+Shift+6",
+    },
+    activeClass: "bg-slate-900 text-white",
+    inactiveClass:
+      "bg-slate-100 dark:bg-slate-300 text-black hover:bg-slate-200",
+    },
 ];
 
 export type ToolbarAction = (typeof TOOLBAR_ACTIONS)[number]["key"];
