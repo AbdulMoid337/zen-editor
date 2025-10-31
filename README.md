@@ -1,18 +1,6 @@
-# 🧠 React Notepad – Notion-Style Rich Text Editor
+# 🧠 Zen-Editor
 
 A powerful and minimalist Notepad app built with **React**, **Zustand**, **Tiptap**, and **TailwindCSS**, fully working in the browser via **localStorage**.  
-Inspired by Notion. No backend required.
-
-![Preview](./notepad.png)
-
----
-
-## 🎥 YouTube Tutorial
-
-📺 Watch the full build tutorial on YouTube:  
-🔗 [React Notepad | CRUD + Rich Text Editor | No Backend Required](https://youtu.be/FIERmgWJJFI)
-
----
 
 ## ✨ Features
 
@@ -61,25 +49,3 @@ Each note is stored like this in `localStorage`:
 }
 ```
 
----
-
-## 📌 To-Do (Ideas)
-
-* [ ] Drag-and-drop note blocks
-* [ ] Dark mode toggle
-* [ ] Search and filter
-* [ ] Export/import notes
-* [ ] Firebase/MongoDB sync version
-
----
-
-## 📜 License
-
-MIT — free to use, modify, and share.
-
----
-
-## 🙌 Author
-
-Created by [HumoyunDev](https://github.com/humoyun-dev)
-📹 YouTube Channel: [youtube.com/@humoyun-dev](https://www.youtube.com/@humoyun-dev)
