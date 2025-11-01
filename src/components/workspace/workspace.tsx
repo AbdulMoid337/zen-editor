@@ -1,14 +1,20 @@
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { EditorContent } from "@tiptap/react";
 import { useEditorConfig } from "./tip-top/config";
 import Title from "./title";
 import Toolbar from "./tip-top/toolbar";
+import SlashCommandDropdown from "./slashcommands/slash-command-dropdown";
 import type { ToolbarAction } from "./tip-top/toolbar_actions";
 import { useDataStore, type Note } from "@/stores/data.store";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Workspace = ({ note }: { note: Note }) => {
   const { updateNote } = useDataStore();
+  const [slashCommandOpen, setSlashCommandOpen] = useState(false);
+  const [slashCommandPosition, setSlashCommandPosition] = useState({ 
+    top: 0, 
+    left: 0 
+  });
 
   const editor = useEditorConfig({
     initialContent: note.content,
@@ -16,6 +22,15 @@ const Workspace = ({ note }: { note: Note }) => {
       updateNote(note.id, { content: content });
     },
     onReady: () => console.log("Ready"),
+    slashCommandOptions: {
+      onSlashCommand: (position: { top: number; left: number }) => {
+        setSlashCommandPosition(position);
+        setSlashCommandOpen(true);
+      },
+      onCloseSlashCommand: () => {
+        setSlashCommandOpen(false);
+      },
+    },
   });
 
   const toggle = useCallback(
@@ -92,17 +107,50 @@ const Workspace = ({ note }: { note: Note }) => {
     [editor]
   );
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (editor?.view.dom && !editor.view.dom.contains(event.target as Node)) {
+        setSlashCommandOpen(false);
+      }
+    };
+
+    if (slashCommandOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [slashCommandOpen, editor]);
+
   if (!editor) return null;
 
   return (
-    <ScrollArea className="max-w-6xl h-[95vh] mx-auto md:p-6">
-      <Title
-        title={note.title}
-        setTitle={(e) => updateNote(note.id, { title: e })}
-      />
-
-      <Toolbar editor={editor} onToggle={toggle} />
-      <EditorContent className="tiptap prose prose-lg max-w-full w-full break-word overflow-x-auto" editor={editor} />
+    <ScrollArea className="flex-1">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <Title
+          title={note.title}
+          setTitle={(newTitle: string) => updateNote(note.id, { title: newTitle })}
+        />
+        
+        <div className="relative">
+          <Toolbar 
+            editor={editor} 
+            onToggle={toggle} 
+          />
+          
+          <div className="relative">
+            <EditorContent 
+              editor={editor} 
+              className="prose prose-slate dark:prose-invert max-w-none focus:outline-none min-h-[500px] p-4 rounded-lg border border-slate-200 dark:border-slate-700"
+            />
+            
+            <SlashCommandDropdown
+              editor={editor}
+              isOpen={slashCommandOpen}
+              onClose={() => setSlashCommandOpen(false)}
+              position={slashCommandPosition}
+            />
+          </div>
+        </div>
+      </div>
     </ScrollArea>
   );
 };

@@ -120,6 +120,10 @@
   }
 }
 
+* {
+  font-family: "Segoe UI Variable Display", "Segoe UI", Helvetica, "Open Sans", "Source Sans Pro", "Arial", sans-serif;
+}
+
 .tiptap h1 {
   font-size: 2.5rem; /* 32px */
   line-height: 2.5rem; /* 40px */
@@ -326,4 +330,131 @@
 .prose pre::-webkit-scrollbar-thumb {
   background-color: #475569; /* slate-600 */
   border-radius: 4px;
+  
+}
+
+.ProseMirror {
+  padding-inline: 1.2rem;
+
+  
+}
+
+/* Space between consecutive elements inside the editor */
+.ProseMirror > * + * {
+  margin-top: 0.75em;
+  
+}
+
+/* Style for each draggable block */
+.ProseMirror [data-id] {
+  border: 3px solid #0d0d0d;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0 1rem;
+  position: relative;
+  padding: 2rem 1rem 1rem;
+}
+
+/* Block label (shows block id or type) */
+.ProseMirror [data-id]::before {
+  content: attr(data-id);
+  background-color: #0d0d0d;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  
+}
+
+/* Drag handle styling */
+.drag-handle {
+  align-items: center;
+  background: #f0f0f0;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  display: flex;
+  height: 1.5rem;
+  justify-content: center;
+  width: 1.5rem;
+  position: absolute;
+  left: 0.5rem;       /* move it farther left */
+  top: 1rem;        /* align vertically */
+  transition: background 0.2s ease, transform 0.1s ease;
+  gap: 0.5rem;         /* spacing inside if icon text used */
+}
+
+/* Hover effect */
+.drag-handle:hover {
+  background: #e0e0e0;
+}
+
+/* SVG inside handle */
+.drag-handle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #555;
+  
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  font-size: 1rem;     /* ⬅️ slightly smaller text */
+  pointer-events: none;
+}
+
+.tiptap p.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  font-size: 1rem;     /* ⬅️ smaller font size */
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Custom scrollbar styles for the slash command dropdown */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-slate-300::-webkit-scrollbar-thumb {
+  background-color: rgb(203 213 225);
+  border-radius: 9999px;
+}
+
+.scrollbar-thumb-slate-600::-webkit-scrollbar-thumb {
+  background-color: rgb(71 85 105);
+  border-radius: 9999px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(148 163 184);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(51 65 85);
 }

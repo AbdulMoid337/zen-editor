@@ -6,6 +6,8 @@ export interface Note {
   id: string;
   title: string;
   content: string;
+  posX?: number;
+  posY?: number;
 }
 
 interface Store {
@@ -30,7 +32,7 @@ export const useDataStore = create<Store>()(
         createNote: () =>
           set((state) => {
             const id = uuidv4();
-            const newNote = { id, title: "Untitled", content: "" };
+            const newNote = { id, title: "Untitled", content: "", posX: 0, posY: 0 };
             return {
               notes: [newNote, ...state.notes],
               activeId: id,
