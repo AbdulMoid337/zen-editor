@@ -32,9 +32,10 @@ cd backend
 ```
 
 Create a `.env` file inside the `backend` folder and add the following line:
+You can create your API KEY here -> https://aistudio.google.com/api-keys
 
 ```bash
-GEMINI_API_KEY=AIzaSyDmCqnP7_mWsRn0duSeOaQYjniF9e-5lHU
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
 Then install dependencies and start the backend server:
