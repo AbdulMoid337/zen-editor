@@ -31,8 +31,8 @@ Navigate to the backend folder
 cd backend
 ```
 
-Create a `.env` file inside the `backend` folder and add the following line:
-You can create your API KEY here -> https://aistudio.google.com/api-keys
+- Create a `.env` file inside the `backend` folder and add the following line:
+- You can create your GEMINI API KEY here -> https://aistudio.google.com/api-keys
 
 ```bash
 GEMINI_API_KEY=your_gemini_api_key
