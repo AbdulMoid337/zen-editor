@@ -1,4 +1,4 @@
-# 🧠 Zen-Editor
+#  Zen-Editor
 
 A powerful and minimalist Notion style app built with **React**, **Zustand**, **Tiptap**, and **TailwindCSS**, fully working in the browser via **localStorage** and **Gemini API integration**.
 
@@ -15,6 +15,19 @@ A powerful and minimalist Notion style app built with **React**, **Zustand**, **
 -  Fast build using **Vite** and **TypeScript**
 
 ---
+
+##  Tech Stack
+
+* React + TypeScript
+* Zustand
+* Tiptap 
+* TailwindCSS
+* Radix UI
+* Vite
+* Node.js + Express (Backend)
+* Gemini API (AI features)
+
+ ---
 
 ## Project Setup steps
 
@@ -72,18 +85,3 @@ npm run dev
 ```
 
 Frontend will run at: `http://localhost:5173`
-
----
-
-## 🛠 Tech Stack
-
-* React + TypeScript
-* Zustand
-* Tiptap 
-* TailwindCSS
-* Radix UI
-* Vite
-* Node.js + Express (Backend)
-* Gemini API (AI features)
-
----
