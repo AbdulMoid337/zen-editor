@@ -25,7 +25,7 @@ Open the main folder in your code editor
 
 ### 2️⃣ Setup the Backend
 
-Navigate to the bacend folder
+Navigate to the backend folder
 
 ```bash
 cd backend
