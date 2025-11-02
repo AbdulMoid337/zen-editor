@@ -119,9 +119,6 @@ const SlashCommandDropdown: React.FC<SlashCommandDropdownProps> = ({
         case "codeBlock":
           chain.toggleCodeBlock().run();
           break;
-        // case "link":
-        //   chain.focus().extendMarkRange('link').setLink
-        //   break;
         default:
           break;
       }

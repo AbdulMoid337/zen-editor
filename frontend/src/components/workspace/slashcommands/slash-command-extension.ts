@@ -1,9 +1,8 @@
 import { Extension } from "@tiptap/core";
-import { PluginKey } from "@tiptap/pm/state";
-import { Plugin } from "@tiptap/pm/state";
+import { Plugin, PluginKey } from "@tiptap/pm/state";
 
 export interface SlashCommandOptions {
-  onSlashCommand: (position: { top: number; left: number }) => void;
+  onSlashCommand: (pos: { top: number; left: number }) => void;
   onCloseSlashCommand: () => void;
 }
 
@@ -28,29 +27,40 @@ export const SlashCommandExtension = Extension.create<SlashCommandOptions>({
 
             if (event.key === "/") {
               const textBefore = state.doc.textBetween(
-                Math.max(0, selection.from - 20),
+                Math.max(0, selection.from - 50),
                 selection.from
               );
-              
-              const isAtStartOrAfterSpace = 
-                selection.from === 1 || 
-                textBefore.endsWith(" ") || 
-                textBefore.endsWith("\n");
 
-              if (isAtStartOrAfterSpace) {
+              const valid =
+                selection.from <= 1 ||
+                textBefore.endsWith(" ") ||
+                textBefore.endsWith("\n") ||
+                textBefore.match(/[\n]\s*$/) ||
+                textBefore.match(/[.!?]\s*$/) ||
+                textBefore.length === 0;
+
+              if (valid) {
                 setTimeout(() => {
-                  const coords = view.coordsAtPos(selection.from);
-                  const editorRect = view.dom.getBoundingClientRect();
-                  
-                  this.options.onSlashCommand({
-                    top: coords.top - editorRect.top + 25,
-                    left: coords.left - editorRect.left,
-                  });
+                  try {
+                    const coords = view.coordsAtPos(selection.from + 1);
+                    const rect = view.dom.getBoundingClientRect();
+                    this.options.onSlashCommand({
+                      top: coords.top - rect.top + 25,
+                      left: coords.left - rect.left,
+                    });
+                  } catch {
+                    const coords = view.coordsAtPos(selection.from);
+                    const rect = view.dom.getBoundingClientRect();
+                    this.options.onSlashCommand({
+                      top: coords.top - rect.top + 25,
+                      left: coords.left - rect.left,
+                    });
+                  }
                 }, 0);
               }
             }
 
-            if (event.key === "Escape" || event.key === "Backspace") {
+            if (event.key === "Escape") {
               this.options.onCloseSlashCommand();
             }
 
@@ -58,12 +68,16 @@ export const SlashCommandExtension = Extension.create<SlashCommandOptions>({
           },
 
           handleTextInput: (view, from, _to, text) => {
-            if (text !== "/" && text.toString().length > 0) {
-              const { state } = view;
-              const textBefore = state.doc.textBetween(from - 1, from);
-              
-              if (textBefore !== "/") {
-                this.options.onCloseSlashCommand();
+            if (text !== "/" && text.length > 0) {
+              const textBefore = view.state.doc.textBetween(
+                Math.max(0, from - 10),
+                from
+              );
+              if (!textBefore.includes("/") || text.match(/[a-zA-Z0-9]/)) {
+                const lastSlash = textBefore.lastIndexOf("/");
+                if (lastSlash === -1 || from - lastSlash > 20) {
+                  this.options.onCloseSlashCommand();
+                }
               }
             }
             return false;
@@ -73,18 +87,17 @@ export const SlashCommandExtension = Extension.create<SlashCommandOptions>({
             keyup: (view, event) => {
               const { state } = view;
               const { selection } = state;
-              
+
               if (event.key === "Backspace" || event.key === "Delete") {
                 const textBefore = state.doc.textBetween(
-                  Math.max(0, selection.from - 1),
+                  Math.max(0, selection.from - 20),
                   selection.from
                 );
-                
                 if (!textBefore.includes("/")) {
                   this.options.onCloseSlashCommand();
                 }
               }
-              
+
               return false;
             },
           },
