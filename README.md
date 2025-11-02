@@ -27,14 +27,14 @@ A powerful and minimalist Notion style app built with **React**, **Zustand**, **
 * Node.js + Express (Backend)
 * Gemini API (AI features)
 
- ---
+---
 
 ## Project Setup steps
 
 ### 1️⃣ Unzip the Project
 
-Unzip the downloaded ZIP file.
-Open the main folder in your code editor
+- Unzip the downloaded ZIP file.
+- Open the main folder in your code editor
 
 ### 2️⃣ Setup the Backend
 
