@@ -1,343 +1,305 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
+import type {
+  MouseEvent as ReactMouseEvent,
+} from "react";
 import { Editor } from "@tiptap/react";
 import { SLASH_COMMANDS, type SlashCommand } from "./slash-commands";
 import { cn } from "@/lib/utils";
 import { Search, X } from "lucide-react";
 
+type Position = { top: number; left: number };
+
 interface SlashCommandDropdownProps {
   editor: Editor;
   isOpen: boolean;
   onClose: () => void;
-  position: { top: number; left: number };
+  position: Position;
 }
 
-const SlashCommandDropdown: React.FC<SlashCommandDropdownProps> = ({
+const PANEL_WIDTH = 360;
+const PANEL_MAX_HEIGHT = 320;
+const EDGE_PADDING = 10;
+
+export default function SlashCommandDropdown({
   editor,
   isOpen,
   onClose,
   position,
-}) => {
+}: SlashCommandDropdownProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [filteredCommands, setFilteredCommands] = useState(SLASH_COMMANDS);
   const [searchValue, setSearchValue] = useState("");
-  const [adjustedPosition, setAdjustedPosition] = useState(position);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [adjustedPosition, setAdjustedPosition] = useState<Position>(position);
 
-  const calculatePosition = useCallback(() => {
-    if (!dropdownRef.current || !editor) return position;
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
+  const filteredCommands = useMemo(() => {
+    const query = searchValue.trim().toLowerCase();
+    if (!query) return SLASH_COMMANDS;
+    return SLASH_COMMANDS.filter(
+      (c) =>
+        c.label.toLowerCase().includes(query) ||
+        c.description.toLowerCase().includes(query) ||
+        c.key.toLowerCase().includes(query)
+    );
+  }, [searchValue]);
+
+  const calculatePosition = useCallback((): Position => {
     const dropdown = dropdownRef.current;
-    const editorElement = editor.view.dom.parentElement;
-    
-    if (!editorElement) return position;
+    if (!dropdown || !editor) return position;
 
-    const editorRect = editorElement.getBoundingClientRect();
-    const dropdownRect = dropdown.getBoundingClientRect();
-    
-    let newTop = position.top;
-    let newLeft = position.left;
+    const editorEl = editor.view.dom.parentElement;
+    if (!editorEl) return position;
 
-    if (position.left + dropdownRect.width > editorRect.width) {
-      newLeft = editorRect.width - dropdownRect.width - 10;
+    const editorRect = editorEl.getBoundingClientRect();
+    const panelWidth = PANEL_WIDTH;
+    const panelHeight = Math.min(PANEL_MAX_HEIGHT, 400);
+
+    let left = position.left;
+    let top = position.top;
+
+    if (left + panelWidth > editorRect.width - EDGE_PADDING) {
+      left = Math.max(EDGE_PADDING, editorRect.width - panelWidth - EDGE_PADDING);
+    } else {
+      left = Math.max(EDGE_PADDING, left);
     }
 
-    if (newLeft < 10) {
-      newLeft = 10;
+    const spaceBelow = editorRect.height - position.top;
+    const needsFlip = position.top + panelHeight > editorRect.height - 50 && spaceBelow < 240;
+
+    if (needsFlip) {
+      top = Math.max(EDGE_PADDING, position.top - panelHeight - 24);
     }
 
-    if (position.top + dropdownRect.height > editorRect.height - 50) {
-      newTop = position.top - dropdownRect.height - 30;
-    }
-
-    if (newTop < 10) {
-      newTop = 10;
-    }
-
-    return { top: newTop, left: newLeft };
-  }, [position, editor]);
+    return { top, left };
+  }, [editor, position]);
 
   const executeCommand = useCallback(
-    (command: SlashCommand) => {
+    (cmd: SlashCommand) => {
+      if (!editor) return;
+
       const chain = editor.chain().focus();
-      
       const { state } = editor;
       const { selection } = state;
-      
+
       let slashPos = -1;
-      for (let i = selection.from - 1; i >= Math.max(0, selection.from - 20); i--) {
+      for (let i = selection.from - 1; i >= Math.max(0, selection.from - 30); i--) {
         const char = state.doc.textBetween(i, i + 1);
         if (char === "/") {
           slashPos = i;
           break;
-        } else if (char === " " || char === "\n") {
-          break;
         }
+        if (char === " " || char === "\n") break;
       }
 
-      if (slashPos !== -1) {
-        chain.deleteRange({
-          from: slashPos,
-          to: selection.from,
-        });
+      if (slashPos !== -1) chain.deleteRange({ from: slashPos, to: selection.from });
+
+      switch (cmd.command) {
+        case "paragraph": chain.setParagraph().run(); break;
+        case "heading1": chain.toggleHeading({ level: 1 }).run(); break;
+        case "heading2": chain.toggleHeading({ level: 2 }).run(); break;
+        case "heading3": chain.toggleHeading({ level: 3 }).run(); break;
+        case "heading4": chain.toggleHeading({ level: 4 }).run(); break;
+        case "heading5": chain.toggleHeading({ level: 5 }).run(); break;
+        case "heading6": chain.toggleHeading({ level: 6 }).run(); break;
+        case "blockquote": chain.toggleBlockquote().run(); break;
+        case "bulletList": chain.toggleBulletList().run(); break;
+        case "orderedList": chain.toggleOrderedList().run(); break;
+        case "taskList": chain.toggleTaskList().run(); break;
+        case "codeBlock": chain.toggleCodeBlock().run(); break;
+        default: break;
       }
 
-      switch (command.command) {
-        case "paragraph":
-          chain.setParagraph().run();
-          break;
-        case "heading1":
-          chain.toggleHeading({ level: 1 }).run();
-          break;
-        case "heading2":
-          chain.toggleHeading({ level: 2 }).run();
-          break;
-        case "heading3":
-          chain.toggleHeading({ level: 3 }).run();
-          break;
-        case "heading4":
-          chain.toggleHeading({ level: 4 }).run();
-          break;
-        case "heading5":
-          chain.toggleHeading({ level: 5 }).run();
-          break;
-        case "heading6":
-          chain.toggleHeading({ level: 6 }).run();
-          break;
-        case "blockquote":
-          chain.toggleBlockquote().run();
-          break;
-        case "bulletList":
-          chain.toggleBulletList().run();
-          break;
-        case "orderedList":
-          chain.toggleOrderedList().run();
-          break;
-        case "taskList":
-          chain.toggleTaskList().run();
-          break;
-        case "codeBlock":
-          chain.toggleCodeBlock().run();
-          break;
-        default:
-          break;
-      }
-      
       onClose();
     },
     [editor, onClose]
   );
 
-  const handleKeyDown = useCallback(
+  const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (!isOpen) return;
+      const { key } = event;
 
-      switch (event.key) {
-        case "ArrowDown":
-          event.preventDefault();
-          setSelectedIndex((prev) =>
-            prev < filteredCommands.length - 1 ? prev + 1 : 0
-          );
-          break;
-        case "ArrowUp":
-          event.preventDefault();
-          setSelectedIndex((prev) =>
-            prev > 0 ? prev - 1 : filteredCommands.length - 1
-          );
-          break;
-        case "Enter":
-          event.preventDefault();
-          if (filteredCommands[selectedIndex]) {
-            executeCommand(filteredCommands[selectedIndex]);
-          }
-          break;
-        case "Escape":
-          event.preventDefault();
-          onClose();
-          break;
-        case "Backspace":
-          if (searchValue === "") {
-            event.preventDefault();
-            onClose();
-          }
-          break;
-        default:
-          break;
+      if (["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab", "Backspace"].includes(key)) {
+        event.preventDefault();
       }
-    },
-    [isOpen, selectedIndex, filteredCommands, executeCommand, onClose, searchValue]
-  );
 
-  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchValue(value);
-    
-    if (value.trim() === "") {
-      setFilteredCommands(SLASH_COMMANDS);
-    } else {
-      const filtered = SLASH_COMMANDS.filter(
-        (command) =>
-          command.label.toLowerCase().includes(value.toLowerCase()) ||
-          command.description.toLowerCase().includes(value.toLowerCase()) ||
-          command.key.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredCommands(filtered);
-    }
-    setSelectedIndex(0);
-  }, []);
-
-  const clearSearch = useCallback(() => {
-    setSearchValue("");
-    setFilteredCommands(SLASH_COMMANDS);
-    setSelectedIndex(0);
-    searchInputRef.current?.focus();
-  }, []);
-
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (key === "ArrowDown") {
+        setSelectedIndex((i) => (i < filteredCommands.length - 1 ? i + 1 : 0));
+      } else if (key === "ArrowUp") {
+        setSelectedIndex((i) => (i > 0 ? i - 1 : filteredCommands.length - 1));
+      } else if (key === "Enter") {
+        const current = filteredCommands[selectedIndex];
+        if (current) executeCommand(current);
+      } else if (key === "Escape") {
+        onClose();
+      } else if (key === "Backspace" && searchValue === "") {
         onClose();
       }
     },
-    [onClose]
+    [isOpen, filteredCommands, selectedIndex, executeCommand, onClose, searchValue]
   );
 
   useEffect(() => {
-    if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
-  }, [isOpen, handleKeyDown, handleClickOutside]);
+    if (!isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onKeyDown, onClose]);
 
   useEffect(() => {
     if (isOpen) {
       setSelectedIndex(0);
-      setFilteredCommands(SLASH_COMMANDS);
       setSearchValue("");
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
+      setTimeout(() => searchInputRef.current?.focus(), 60);
     }
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen && dropdownRef.current) {
-      const newPosition = calculatePosition();
-      setAdjustedPosition(newPosition);
-    }
+    if (isOpen) setAdjustedPosition(calculatePosition());
   }, [isOpen, position, calculatePosition]);
 
   useEffect(() => {
-    if (isOpen && dropdownRef.current) {
-      const selectedElement = dropdownRef.current.querySelector(
-        `[data-index="${selectedIndex}"]`
-      ) as HTMLElement;
-      
-      if (selectedElement) {
-        selectedElement.scrollIntoView({
-          block: "nearest",
-          behavior: "smooth",
-        });
-      }
-    }
+    if (!isOpen || !dropdownRef.current) return;
+    const el = dropdownRef.current.querySelector<HTMLElement>(
+      `[data-index="${selectedIndex}"]`
+    );
+    el?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [selectedIndex, isOpen]);
+
+  const clearSearch = useCallback(() => {
+    setSearchValue("");
+    setSelectedIndex(0);
+    searchInputRef.current?.focus();
+  }, []);
 
   if (!isOpen) return null;
 
-  return (
-    <>
-      <div className="fixed inset-0 z-40" onClick={onClose} />
-      
+  const activeId =
+    filteredCommands[selectedIndex] && `slash-option-${selectedIndex}`;
+
+    return (
       <div
         ref={dropdownRef}
-        className="absolute z-50 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl overflow-hidden backdrop-blur-sm"
         style={{
+          position: "absolute",
           top: adjustedPosition.top,
           left: adjustedPosition.left,
-          boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+          width: 300,
+          
         }}
+        className={cn(
+          "z-50 overflow-hidden rounded-2xl border border-border bg-popover/95 shadow-xl backdrop-blur-xl",
+          "ring-1 ring-black/5 dark:ring-white/10",
+          "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-150 ease-out"
+        )}
+        role="dialog"
+        aria-label="Slash commands"
       >
-        <div className="p-2">
-          <div className="relative mb-2">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-slate-400" />
-            </div>
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-border bg-gradient-to-b from-background/70 to-background/40">
+          <div className="relative flex-1">
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               ref={searchInputRef}
-              type="text"
-              placeholder="Search blocks..."
               value={searchValue}
-              onChange={handleSearchChange}
-              className="w-full pl-10 pr-10 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-400 dark:placeholder-slate-500 text-slate-900 dark:text-slate-100"
+              onChange={(e) => setSearchValue(e.target.value)}
+              placeholder='Search blocks (e.g. "heading", "list", "code")'
+              className={cn(
+                "w-full rounded-md border border-border bg-background pl-8 pr-8 py-2 text-sm outline-none transition",
+                "placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-ring focus:border-ring"
+              )}
+              aria-autocomplete="list"
+              aria-controls="slash-listbox"
+              aria-activedescendant={activeId ?? undefined}
             />
             {searchValue && (
               <button
+                type="button"
                 onClick={clearSearch}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors cursor-pointer"
+                aria-label="Clear search"
               >
-                <X className="h-4 w-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors" />
+                <X className="h-4 w-4" />
               </button>
             )}
           </div>
-          
-          <div className="max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600 scrollbar-track-transparent">
-            {filteredCommands.length > 0 ? (
-              <div className="space-y-1">
-                {filteredCommands.map((command, index) => {
-                  return (
+        </div>
+    
+        <div
+          id="slash-listbox"
+          role="listbox"
+          className="max-h-[320px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent"
+        >
+          {filteredCommands.length > 0 ? (
+            <ul className="space-y-1">
+              {filteredCommands.map((cmd, idx) => {
+                const isActive = idx === selectedIndex;
+                return (
+                  <li key={cmd.key} role="none">
                     <button
-                      key={command.key}
-                      data-index={index}
+                      role="option"
+                      id={`slash-option-${idx}`}
+                      data-index={idx}
+                      aria-selected={isActive}
+                      onMouseEnter={() => setSelectedIndex(idx)}
+                      onMouseDown={(e: ReactMouseEvent) => {
+                        e.preventDefault();
+                        executeCommand(cmd);
+                      }}
                       className={cn(
-                        "w-full flex items-center gap-3 px-3 py-3 text-left text-sm rounded-lg transition-all duration-150",
-                        selectedIndex === index
-                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 shadow-sm"
-                          : "hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent"
+                        "group w-full flex items-start gap-3 px-3 py-2.5 rounded-lg text-left cursor-pointer transition-all duration-150",
+                        isActive
+                          ? "bg-accent text-accent-foreground shadow-md ring-1 ring-accent/30 scale-[1.02]"
+                          : "hover:bg-muted/70 hover:text-foreground"
                       )}
-                      onClick={() => executeCommand(command)}
-                      onMouseEnter={() => setSelectedIndex(index)}
                     >
-                      <div className="flex-1 min-w-0">
-                        <div className={cn(
-                          "font-medium truncate",
-                          selectedIndex === index
-                            ? "text-slate-900 dark:text-slate-100"
-                            : "text-slate-700 dark:text-slate-200"
-                        )}>
-                          {command.label}
+                      <div className="grid place-items-center h-6 w-6 rounded-md bg-muted text-muted-foreground text-[10px] font-semibold shrink-0 group-hover:bg-accent/70 group-hover:text-accent-foreground transition-colors">
+                        {cmd.key.slice(0, 2).toUpperCase()}
+                      </div>
+    
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="truncate text-sm font-medium">
+                            {cmd.label}
+                          </span>
                         </div>
-                        <div className={cn(
-                          "text-xs truncate mt-0.5",
-                          selectedIndex === index
-                            ? "text-slate-600 dark:text-slate-400"
-                            : "text-slate-500 dark:text-slate-500"
-                        )}>
-                          {command.description}
-                        </div>
+                        <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                          {cmd.description}
+                        </p>
                       </div>
                     </button>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="py-8 text-center">
-                <div className="text-slate-400 dark:text-slate-500 text-sm">
-                  No blocks found
-                </div>
-                <div className="text-xs text-slate-400 dark:text-slate-600 mt-1">
-                  Try searching for "heading", "list", or "code"
-                </div>
-              </div>
-            )}
-          </div>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="py-8 text-center text-sm text-muted-foreground">
+              <p>No matching commands</p>
+              <p className="mt-1 text-xs text-muted-foreground/80">
+                Try searching for “heading”, “list”, or “code”
+              </p>
+            </div>
+          )}
         </div>
+    
+        <div className="h-2 bg-gradient-to-t from-foreground/10 to-transparent" />
       </div>
-    </>
-  );
-};
-
-export default SlashCommandDropdown;
+    );
+    
+}
