@@ -1,22 +1,22 @@
 # 🧠 Zen-Editor
 
-A powerful and minimalist Notepad app built with **React**, **Zustand**, **Tiptap**, and **TailwindCSS**, fully working in the browser via **localStorage** and **Gemini API integration**.
+A powerful and minimalist Notion style app built with **React**, **Zustand**, **Tiptap**, and **TailwindCSS**, fully working in the browser via **localStorage** and **Gemini API integration**.
 
 ---
 
-## ✨ Features
+## Features
 
-- 📝 Notion-style **rich text editor**
-- ⚙️ Global state management with **Zustand**
-- 💾 **LocalStorage CRUD**: create, edit, delete notes
-- 🔮 **Gemini API-powered AI features** (improve, summarize, expand text)
-- 🎨 Responsive and beautiful UI via **TailwindCSS**
-- 🧱 Block-level formatting (bold, italic, code, lists, etc.)
-- ⚡️ Fast build using **Vite** and **TypeScript**
+-  Notion-style **rich text editor**
+-  Global state management with **Zustand**
+-  **LocalStorage CRUD**: create, edit, delete notes
+-  **Gemini API-powered AI features** (improve, summarize, expand text)
+-  Responsive and beautiful UI via **TailwindCSS**
+-  Block-level formatting (bold, italic, code, lists, etc.)
+-  Fast build using **Vite** and **TypeScript**
 
 ---
 
-## 🚀 Project Setup
+## Project Setup steps
 
 ### 1️⃣ Unzip the Project
 
@@ -25,7 +25,7 @@ Open the main folder in your code editor
 
 ### 2️⃣ Setup the Backend
 
-
+Navigate to the bacend folder
 
 ```bash
 cd backend
