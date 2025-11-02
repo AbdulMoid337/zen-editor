@@ -21,7 +21,7 @@ const generateAIResponse = async (prompt, text) => {
     });
     return response.text;
   } catch (error) {
-    console.error("⚠️ Gemini API Error:", error.message);
+    console.error("Gemini API Error:", error.message);
     throw new Error("Failed to generate AI response");
   }
 };
@@ -31,7 +31,13 @@ app.post("/api/ai/summarize", async (req, res) => {
     const { text } = req.body;
     if (!text?.trim()) return res.status(400).json({ success: false, error: "Text is required" });
 
-    const prompt = "Summarize the following text in a concise way:";
+    const prompt = `
+    You are an expert text summarizer. Summarize the following text clearly and concisely in 2–3 sentences. 
+    Focus on the main ideas and remove unnecessary details or repetition. 
+    Keep the summary natural, easy to read, and in the same language as the input.
+    
+    Text:
+    `;
     const summary = await generateAIResponse(prompt, text);
 
     res.json({ success: true, data: summary });
