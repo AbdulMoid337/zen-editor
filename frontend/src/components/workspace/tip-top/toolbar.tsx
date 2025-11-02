@@ -101,29 +101,57 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
 
   return (
     <div className="flex sticky top-0 z-50 bg-background flex-wrap gap-2 border-b pb-4 mb-6 border-slate-200 dark:border-slate-700">
-      
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center gap-2 h-9 px-4 bg-purple-100 dark:bg-purple-300 text-black hover:bg-purple-200"
             disabled={isProcessingAI}
+            className={cn(
+              "relative h-9 px-4 rounded-xl flex items-center gap-2 font-medium",
+              "bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-700",
+              "text-slate-900 dark:text-slate-100 hover:from-purple-200 hover:to-purple-300 dark:hover:from-purple-800 dark:hover:to-purple-600",
+              "transition-all duration-300 ease-out shadow-sm hover:shadow-md cursor-pointer"
+            )}
           >
-            {isProcessingAI ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
-            <span>{isProcessingAI ? "Processing..." : "AI"}</span>
+            {isProcessingAI ? (
+              <Loader2 size={16} className="animate-spin text-purple-700 dark:text-purple-300" />
+            ) : (
+              <Sparkles size={16} className="text-purple-700 dark:text-purple-300" />
+            )}
+            <span className="tracking-wide">
+              {isProcessingAI ? "Thinking..." : "Ask AI"}
+            </span>
+            <div className="absolute inset-0 rounded-xl ring-1 ring-purple-300/30 dark:ring-purple-500/20" />
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="start">
-          {["summarize", "expand", "improve"].map(cmd => (
-            <DropdownMenuItem key={cmd} disabled={isProcessingAI} onClick={() => handleAICommand(cmd as any)}>
-              <span className="flex items-center gap-2">
-                <Sparkles size={16} /> {cmd.charAt(0).toUpperCase() + cmd.slice(1)}
-              </span>
+        <DropdownMenuContent
+          align="start"
+          sideOffset={6}
+          className={cn(
+            "w-44 p-2 rounded-xl shadow-xl border border-purple-200/40 dark:border-purple-800/50",
+            "bg-white/80 dark:bg-slate-900/90 backdrop-blur-lg",
+            "animate-in fade-in-0 zoom-in-95 duration-200"
+          )}
+        >
+          {["summarize", "expand", "improve"].map((cmd) => (
+            <DropdownMenuItem
+              key={cmd}
+              disabled={isProcessingAI}
+              onClick={() => handleAICommand(cmd as any)}
+              className={cn(
+                "flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium",
+                "text-slate-700 dark:text-slate-200 hover:bg-purple-100/60 dark:hover:bg-purple-800/40",
+                "transition-all duration-200 cursor-pointer"
+              )}
+            >
+              <Sparkles size={16} className="text-purple-600 dark:text-purple-400" />
+              <span>{cmd.charAt(0).toUpperCase() + cmd.slice(1)}</span>
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
+
 
       {baseActions.map(({ key, label, icon: Icon, shortcut, activeClass, inactiveClass }) => {
         const isActive = editor?.isActive(key);
@@ -136,7 +164,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
             title={`${label} (${hotkey})`}
             className={cn(
               isActive ? activeClass : inactiveClass,
-              "flex items-center justify-center rounded-md h-9 px-4 text-sm font-medium"
+              "flex items-center justify-center cursor-pointer rounded-md h-9 px-4 text-sm font-medium"
             )}
           >
             <Icon size={16} />
@@ -153,7 +181,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               title={`${highlightAction.label} (${highlightAction.shortcut[platform]})`}
               className={cn(
                 editor?.isActive("highlight") ? highlightAction.activeClass : highlightAction.inactiveClass,
-                "flex items-center justify-center rounded-md h-9 px-4 text-sm font-medium"
+                "flex items-center justify-center rounded-md h-9 cursor-pointer px-4 text-sm font-medium"
               )}
             >
               <Highlighter size={16} />
@@ -172,7 +200,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
                   size="sm"
                   variant="ghost"
                   className={cn(
-                    "w-8 h-8 p-0 rounded-md border-2 transition-all hover:scale-110",
+                    "w-8 h-8 p-0 rounded-md border-2 transition-all cursor-pointer hover:scale-110",
                     editor?.isActive("highlight", { color })
                       ? "border-slate-900 dark:border-slate-100 shadow-md"
                       : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
@@ -189,7 +217,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="flex items-center gap-2 h-9 px-4">
+          <Button variant="ghost" className="flex items-center gap-2 h-9 px-4 cursor-pointer">
             <AlignCenter size={16} /> <span className="hidden sm:inline">Align</span>
           </Button>
         </DropdownMenuTrigger>
@@ -197,8 +225,8 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
           {alignActions.map(({ key, label }) => {
             const Icon =
               key === "alignLeft" ? AlignLeft :
-              key === "alignCenter" ? AlignCenter :
-              key === "alignRight" ? AlignRight : AlignJustify;
+                key === "alignCenter" ? AlignCenter :
+                  key === "alignRight" ? AlignRight : AlignJustify;
             return (
               <DropdownMenuItem key={key} onClick={() => onToggle(key as ToolbarAction)}>
                 <span className="flex items-center gap-2"><Icon size={16} /> {label}</span>
@@ -210,7 +238,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="flex items-center gap-2 h-9 px-4">
+          <Button variant="ghost" className="flex items-center gap-2 h-9 px-4 cursor-pointer">
             <Heading size={16} /> <span className="hidden sm:inline">Headings</span>
           </Button>
         </DropdownMenuTrigger>
@@ -218,10 +246,10 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
           {headingActions.map(({ key, label }) => {
             const Icon =
               key === "heading1" ? Heading1 :
-              key === "heading2" ? Heading2 :
-              key === "heading3" ? Heading3 :
-              key === "heading4" ? Heading4 :
-              key === "heading5" ? Heading5 : Heading6;
+                key === "heading2" ? Heading2 :
+                  key === "heading3" ? Heading3 :
+                    key === "heading4" ? Heading4 :
+                      key === "heading5" ? Heading5 : Heading6;
             return (
               <DropdownMenuItem key={key} onClick={() => onToggle(key as ToolbarAction)}>
                 <span className="flex items-center gap-2"><Icon size={16} /> {label}</span>

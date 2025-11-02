@@ -71,8 +71,8 @@ app.post("/api/ai/improve", async (req, res) => {
     const { text } = req.body;
     if (!text?.trim()) return res.status(400).json({ success: false, error: "Text is required" });
 
-    const prompt = `
-You are a professional writing assistant. 
+const prompt = `
+ You are a professional writing assistant. 
 Improve the following text for grammar, clarity, and tone.
 Do NOT include any explanations, options, or bullet points.
 Return ONLY the improved version of the text:
