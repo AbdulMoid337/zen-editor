@@ -7,7 +7,7 @@ interface AIResponse {
 class AIService {
   private baseUrl: string;
 
-  constructor(baseUrl: string = "http://localhost:3000/api") {
+  constructor(baseUrl: string = "https://zen-editor-backend.onrender.com/api") {
     this.baseUrl = baseUrl;
   }
 
