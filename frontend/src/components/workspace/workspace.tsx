@@ -1,10 +1,10 @@
 import { useCallback, useState, useEffect } from "react";
 import { EditorContent } from "@tiptap/react";
-import { useEditorConfig } from "./tip-top/config";
+import { useEditorConfig } from "./tip-tap/config";
 import Title from "./title";
-import Toolbar from "./tip-top/toolbar";
+import Toolbar from "./tip-tap/toolbar";
 import SlashCommandDropdown from "./slashcommands/slash-command-dropdown";
-import type { ToolbarAction } from "./tip-top/toolbar_actions";
+import type { ToolbarAction } from "./tip-tap/toolbar_actions";
 import { useDataStore, type Note } from "@/stores/data.store";
 import { ScrollArea } from "@/components/ui/scroll-area";
 

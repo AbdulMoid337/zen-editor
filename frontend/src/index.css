@@ -115,6 +115,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -125,48 +126,60 @@
 }
 
 .tiptap h1 {
-  font-size: 2.5rem; /* 32px */
-  line-height: 2.5rem; /* 40px */
+  font-size: 2.5rem;
+  /* 32px */
+  line-height: 2.5rem;
+  /* 40px */
   font-weight: 700;
   margin-top: 1.25rem;
   margin-bottom: 0.75rem;
 }
 
 .tiptap h2 {
-  font-size: 1.75rem; /* 28px */
-  line-height: 2.25rem; /* 36px */
+  font-size: 1.75rem;
+  /* 28px */
+  line-height: 2.25rem;
+  /* 36px */
   font-weight: 700;
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
 }
 
 .tiptap h3 {
-  font-size: 1.5rem; /* 24px */
-  line-height: 2rem; /* 32px */
+  font-size: 1.5rem;
+  /* 24px */
+  line-height: 2rem;
+  /* 32px */
   font-weight: 600;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 
 .tiptap h4 {
-  font-size: 1.25rem; /* 20px */
-  line-height: 1.75rem; /* 28px */
+  font-size: 1.25rem;
+  /* 20px */
+  line-height: 1.75rem;
+  /* 28px */
   font-weight: 600;
   margin-top: 0.75rem;
   margin-bottom: 0.5rem;
 }
 
 .tiptap h5 {
-  font-size: 1.125rem; /* 18px */
-  line-height: 1.5rem; /* 24px */
+  font-size: 1.125rem;
+  /* 18px */
+  line-height: 1.5rem;
+  /* 24px */
   font-weight: 600;
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
 }
 
 .tiptap h6 {
-  font-size: 1rem; /* 16px */
-  line-height: 1.5rem; /* 24px */
+  font-size: 1rem;
+  /* 16px */
+  line-height: 1.5rem;
+  /* 24px */
   font-weight: 600;
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
@@ -270,17 +283,20 @@
 }
 
 .prose ul li::marker {
-  color: #4f46e5; /* Indigo-600 */
+  color: #4f46e5;
+  /* Indigo-600 */
   font-size: 1rem;
 }
 
 .prose ol li::marker {
-  color: #16a34a; /* Green-600 */
+  color: #16a34a;
+  /* Green-600 */
   font-weight: bold;
 }
 
 .dark .prose pre {
-  background-color: #0f172a; /* darker slate */
+  background-color: #0f172a;
+  /* darker slate */
   color: #f1f5f9;
 }
 
@@ -290,8 +306,10 @@
 }
 
 .prose code {
-  background-color: #f3f4f6; /* Tailwind's slate-100 */
-  color: #be185d; /* Tailwind's pink-700 */
+  background-color: #f3f4f6;
+  /* Tailwind's slate-100 */
+  color: #be185d;
+  /* Tailwind's pink-700 */
   padding: 2px 6px;
   border-radius: 6px;
   font-family: 'Fira Code', monospace;
@@ -300,8 +318,10 @@
 
 /* Code block (e.g. <pre><code>...</code></pre>) */
 .prose pre {
-  background-color: #1e293b; /* Tailwind's slate-900 */
-  color: #f8fafc; /* Tailwind's slate-50 */
+  background-color: #1e293b;
+  /* Tailwind's slate-900 */
+  color: #f8fafc;
+  /* Tailwind's slate-50 */
   padding: 16px;
   border-radius: 8px;
   font-size: 0.875rem;
@@ -328,21 +348,22 @@
 }
 
 .prose pre::-webkit-scrollbar-thumb {
-  background-color: #475569; /* slate-600 */
+  background-color: #475569;
+  /* slate-600 */
   border-radius: 4px;
-  
+
 }
 
 .ProseMirror {
   padding-inline: 1.2rem;
 
-  
+
 }
 
 /* Space between consecutive elements inside the editor */
-.ProseMirror > * + * {
+.ProseMirror>*+* {
   margin-top: 0.75em;
-  
+
 }
 
 /* Style for each draggable block */
@@ -368,7 +389,7 @@
   left: 0;
   padding: 0.25rem 0.75rem;
   border-radius: 0 0 0.5rem 0.5rem;
-  
+
 }
 
 /* Drag handle styling */
@@ -383,10 +404,13 @@
   justify-content: center;
   width: 1.5rem;
   position: absolute;
-  left: 0.5rem;       /* move it farther left */
-  top: 1rem;        /* align vertically */
+  left: 0.5rem;
+  /* move it farther left */
+  top: 1rem;
+  /* align vertically */
   transition: background 0.2s ease, transform 0.1s ease;
-  gap: 0.5rem;         /* spacing inside if icon text used */
+  gap: 0.5rem;
+  /* spacing inside if icon text used */
 }
 
 /* Hover effect */
@@ -399,7 +423,7 @@
   width: 1.1rem;
   height: 1.1rem;
   color: #555;
-  
+
 }
 
 .tiptap p.is-editor-empty:first-child::before {
@@ -407,14 +431,16 @@
   content: attr(data-placeholder);
   float: left;
   height: 0;
-  font-size: 1rem;     /* ⬅️ slightly smaller text */
+  font-size: 1rem;
+  /* ⬅️ slightly smaller text */
   pointer-events: none;
 }
 
 .tiptap p.is-empty::before {
   color: #adb5bd;
   content: attr(data-placeholder);
-  font-size: 1rem;     /* ⬅️ smaller font size */
+  font-size: 1rem;
+  /* ⬅️ smaller font size */
   float: left;
   height: 0;
   pointer-events: none;
@@ -457,4 +483,22 @@
 
 .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background-color: rgb(51 65 85);
+}
+
+code {
+  background-color: var(--purple-light);
+  border-radius: 0.4rem;
+  color: var(--black);
+  font-size: 0.85rem;
+  padding: 0.25em 0.3em;
+}
+
+a {
+  color: var(--purple);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-purple-400);
+    text-decoration: underline;
+  }
 }

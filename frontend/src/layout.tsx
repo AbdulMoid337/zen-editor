@@ -21,7 +21,11 @@ const Layout = () => {
     <div className="md:grid h-screen md:grid-cols-5 flex flex-col">
       <Sheet>
         <SheetTrigger asChild className="md:hidden">
-          <Button className="fixed top-2 left-2 z-50" size={"icon"} variant={"secondary"}>
+          <Button
+            className="fixed top-2 left-2 z-50"
+            size={"icon"}
+            variant={"secondary"}
+          >
             <Menu />
           </Button>
         </SheetTrigger>
@@ -29,7 +33,7 @@ const Layout = () => {
           <SheetHeader>
             <SheetTitle>Menu</SheetTitle>
             <SheetDescription>
-              <LeftSidebar/>
+              <LeftSidebar />
             </SheetDescription>
           </SheetHeader>
         </SheetContent>

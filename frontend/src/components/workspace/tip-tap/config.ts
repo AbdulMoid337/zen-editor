@@ -3,14 +3,16 @@ import StarterKit from "@tiptap/starter-kit";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
 import Highlight from "@tiptap/extension-highlight";
-import { Placeholder } from '@tiptap/extensions';
+import { Placeholder } from "@tiptap/extensions";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Code from "@tiptap/extension-code";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import { SlashCommandExtension } from "../slashcommands/slash-command-extension";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { TextStyle, Color } from "@tiptap/extension-text-style";
+import Link from "@tiptap/extension-link";
 
 interface Props {
   initialContent: string;
@@ -20,7 +22,7 @@ interface Props {
     onSlashCommand: (position: { top: number; left: number }) => void;
     onCloseSlashCommand: () => void;
   };
-} 
+}
 
 const lowlight = createLowlight(common);
 
@@ -38,6 +40,7 @@ export const useEditorConfig = ({
         defaultLanguage: "javascript",
         exitOnTripleEnter: false,
       }),
+
       Highlight.configure({ multicolor: true }),
       Placeholder.configure({
         placeholder: "Write, press '/' for commands...",
@@ -49,15 +52,30 @@ export const useEditorConfig = ({
         types: ["heading", "paragraph"],
       }),
       TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
+      TaskItem.configure({ nested: true }),
       SlashCommandExtension.configure(
         slashCommandOptions || {
           onSlashCommand: () => {},
           onCloseSlashCommand: () => {},
         }
       ),
+      TextStyle,
+      Color.configure({
+        types: ["textStyle"],
+      }),
+      Link.configure({
+        protocols: [
+          {
+            scheme: "tel",
+            optionalSlashes: true,
+          },
+        ],
+        openOnClick: true,
+        autolink: true,
+        defaultProtocol: "https",
+        linkOnPaste: false,
+        enableClickSelection: true,
+      }),
     ],
     content: "",
     autofocus: true,
@@ -86,5 +104,17 @@ export const useEditorConfig = ({
     }
   }, [initialContent, editor]);
 
-  return editor;
+  const colorAPI = useMemo(
+    () => ({
+      setColor: (hexOrCssColor: string) =>
+        editor?.commands.setColor(hexOrCssColor),
+      unsetColor: () => editor?.commands.unsetColor(),
+      hasColor: () => !!editor?.getAttributes("textStyle")?.color,
+      currentColor: () =>
+        editor?.getAttributes("textStyle")?.color as string | undefined,
+    }),
+    [editor]
+  );
+
+  return Object.assign(editor!, { colorAPI });
 };

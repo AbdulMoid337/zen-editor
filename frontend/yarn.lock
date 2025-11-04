@@ -1128,15 +1128,17 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.26.0.tgz"
   integrity sha512-shF5G5+tkYCiBOS+iIU6KC8CpRxYXPMZBuPxLoqysovl9Lj2D+RBgsAEwZl44fT6AbLPEMSVEifcnvLeB+3d6w==
 
-"@tiptap/extension-image@^2.26.0":
-  version "2.26.0"
-  resolved "https://registry.npmjs.org/@tiptap/extension-image/-/extension-image-2.26.0.tgz"
-  integrity sha512-M4mTTRNeUIsdh4NADXHOrO5LFRwUNzMQ5qJ/JZMfF39y/9JNeOeheO7B2feSpr31pKptBzr17nNlkxRWsONcHA==
-
 "@tiptap/extension-italic@^2.26.0":
   version "2.26.0"
   resolved "https://registry.npmjs.org/@tiptap/extension-italic/-/extension-italic-2.26.0.tgz"
   integrity sha512-xlCA4KP4p2SbeZQgkCI61j+jtcr5hkD7xlr2yCZqK+YxS32TzwjxZW/NAj3l8UlYmQYhsVBVodxKuDKsJcRhiQ==
+
+"@tiptap/extension-link@^3.10.1":
+  version "3.10.1"
+  resolved "https://registry.npmjs.org/@tiptap/extension-link/-/extension-link-3.10.1.tgz"
+  integrity sha512-87OBwlU/ylPCDNhNyKPQaM0KiT0FscyAqh8/oErmI7gKVdrUNfO4zcqIOKHql32lEu9KsmpSum/jSeeUJMR4pA==
+  dependencies:
+    linkifyjs "^4.3.2"
 
 "@tiptap/extension-list-item@^2.26.0":
   version "2.26.0"
@@ -1204,9 +1206,14 @@
   integrity sha512-x6mpNGELy2QtSPBoQqNgiXO9PjZoB+O2EAfXA9YRiBDSIRNOrw+7vOVpi+IgzswFmhMNgIYUVfQRud4FHUCNew==
 
 "@tiptap/extension-text-style@^2.26.0":
-  version "2.26.0"
-  resolved "https://registry.npmjs.org/@tiptap/extension-text-style/-/extension-text-style-2.26.0.tgz"
-  integrity sha512-JEhWobvuGu3OI2Ccivmd71WRhI2Tm3yMeooFFnHgvXoNYBTEsmXeQU3Y9pds+4KW/tn2b05Du9AoIhv+cqWPjw==
+  version "2.27.1"
+  resolved "https://registry.npmjs.org/@tiptap/extension-text-style/-/extension-text-style-2.27.1.tgz"
+  integrity sha512-NagQ9qLk0Ril83gfrk+C65SvTqPjL3WVnLF2arsEVnCrxcx3uDOvdJW67f/K5HEwEHsoqJ4Zq9Irco/koXrOXA==
+
+"@tiptap/extension-text-style@^3.10.1":
+  version "3.10.1"
+  resolved "https://registry.npmjs.org/@tiptap/extension-text-style/-/extension-text-style-3.10.1.tgz"
+  integrity sha512-WPpHNtcet6P23w7kQHvut3y3+ATd1/8Wwyk/nIhdEc6RuOerisRm2EPW+kvGHsQ5NdlaQOwY555zKjJkyv1igA==
 
 "@tiptap/extension-text@^2.26.0":
   version "2.26.0"
@@ -2181,6 +2188,11 @@ linkify-it@^5.0.0:
   integrity sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ==
   dependencies:
     uc.micro "^2.0.0"
+
+linkifyjs@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.npmjs.org/linkifyjs/-/linkifyjs-4.3.2.tgz"
+  integrity sha512-NT1CJtq3hHIreOianA8aSXn6Cw0JzYOuDQbOrSPe7gqFnCpKP++MQe3ODgO3oh2GJFORkAAdqredOa60z63GbA==
 
 locate-path@^6.0.0:
   version "6.0.0"
