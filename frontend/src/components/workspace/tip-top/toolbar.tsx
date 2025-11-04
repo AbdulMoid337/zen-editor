@@ -100,7 +100,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
   };
 
   return (
-    <div className="flex sticky top-0 z-50 bg-background flex-wrap gap-2 border-b pb-4 mb-6 border-slate-200 dark:border-slate-700">
+    <div className="flex sticky top-0 z-50 bg-background flex-wrap gap-2 border-b pb-4 mb-6 border-black dark:border-amber-900">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

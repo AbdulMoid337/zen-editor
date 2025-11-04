@@ -19,7 +19,7 @@ const Workspace = ({ note }: { note: Note }) => {
   const editor = useEditorConfig({
     initialContent: note.content,
     onContentChange: (content: string) => {
-      updateNote(note.id, { content: content });
+      updateNote(note.id, { content });
     },
     onReady: () => console.log("Ready"),
     slashCommandOptions: {
@@ -139,7 +139,7 @@ const Workspace = ({ note }: { note: Note }) => {
           <div className="relative">
             <EditorContent 
               editor={editor} 
-              className="prose prose-slate dark:prose-invert max-w-none focus:outline-none min-h-[500px] p-4 rounded-lg border border-slate-200 dark:border-slate-700"
+              className="prose prose-slate dark:prose-invert max-w-none focus:outline-none min-h-[500px] p-4 rounded-lg border border-black dark:border-amber-900"
             />
             
             <SlashCommandDropdown

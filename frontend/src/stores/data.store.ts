@@ -26,7 +26,7 @@ export const useDataStore = create<Store>()(
     persist(
       (set) => ({
         notes: [],
-        activeId: null,
+        activeId: null, 
         _hasHydrated: false,
 
         createNote: () =>

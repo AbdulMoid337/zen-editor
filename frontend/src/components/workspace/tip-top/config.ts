@@ -20,7 +20,7 @@ interface Props {
     onSlashCommand: (position: { top: number; left: number }) => void;
     onCloseSlashCommand: () => void;
   };
-}
+} 
 
 const lowlight = createLowlight(common);
 

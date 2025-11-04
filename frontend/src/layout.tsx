@@ -35,10 +35,10 @@ const Layout = () => {
         </SheetContent>
       </Sheet>
 
-      <div className="border-r p-4 md:block hidden">
+      <div className="border-r  border-black dark:border-amber-900 p-4 md:block hidden">
         <LeftSidebar />
       </div>
-      <div className="col-span-3 p-6">
+      <div className="col-span-3 border-r border-black dark:border-amber-900 p-6">
         {note ? (
           <Workspace note={note} />
         ) : (
@@ -47,7 +47,7 @@ const Layout = () => {
           </div>
         )}
       </div>
-      <div className="border-l md:block hidden"></div>
+      <div className="border-l border-black dark:border-amber-900 md:block hidden"></div>
     </div>
   );
 };
