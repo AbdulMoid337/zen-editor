@@ -61,9 +61,9 @@ const LeftSidebar = () => {
           {filteredData.map((note) => (
             <Card
               className={cn(
-                "shadow-xs relative w- gap-2 hover:border-primary/40 h-[140px]",
+                "shadow-xs relative w- gap-2 hover:border-black dark:hover:border-amber-800 h-[140px]",
                 {
-                  "border-primary/40 bg-primary-foreground dark:bg-background":
+                  "border-black dark:border-amber-900 bg-primary-foreground dark:bg-background":
                     activeId == note.id,
                 }
               )}
