@@ -66,7 +66,7 @@ const LeftSidebar = () => {
               <div className=" px-2">
                 <div className=" flex ">
                   <Pin size={20} />
-                  <span className="text-xs font-bold pl-1.5">Pinnedddjbh</span>
+                  <span className="text-xs font-bold pl-1.5">Pinnedddjbhhbhbhbhbh</span>
                 </div>
               </div>
               {pinnedNotes.map((note) => (
