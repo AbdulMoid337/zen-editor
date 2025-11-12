@@ -1,4 +1,4 @@
-import { Copy, EllipsisVertical, Plus, Trash2 } from "lucide-react";
+import { Copy, EllipsisVertical, Pin, Plus, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -15,14 +15,17 @@ import { v4 as uuidv4 } from "uuid";
 import { ModeToggle } from "../theme.toggle";
 
 const LeftSidebar = () => {
-  const { notes, activeId, setActiveNote, deleteNote, createNote } =
+  const { notes, activeId, setActiveNote, deleteNote, createNote, togglePin } =
     useDataStore();
 
   const [search, setSearch] = useState("");
 
-  const filteredData = notes.filter((note) =>
+  const filtered = notes.filter((note) =>
     note.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  const pinnedNotes = filtered.filter((n) => n.pinned);
+  const otherNotes = filtered.filter((n) => !n.pinned);
 
   function handleDuplicate(id: string) {
     const o = notes.find((n) => n.id == id);
@@ -56,10 +59,81 @@ const LeftSidebar = () => {
         </Button>
       </div>
 
-      <div className="h-[90vh] mt-4 w-full overflow-y-auto">
-        <div className="flex flex-col pr-3 gap-y-3">
-          {filteredData.map((note) => (
+      <div className="h-screen mt-4 w-full overflow-y-auto">
+        <div className="flex flex-col pr-3 gap-y-2.5">
+          {pinnedNotes.length > 0 && (
+            <>
+              <div className=" px-2">
+                <div className=" flex ">
+                  <Pin size={20} />
+                  <span className="text-xs font-bold pl-1.5">Pinned</span>
+                </div>
+              </div>
+              {pinnedNotes.map((note) => (
+                <Card
+                  key={note.id}
+                  className={cn(
+                    "shadow-xs relative w- gap-2 hover:border-black dark:hover:border-amber-800 h-[140px]",
+                    {
+                      "border-black dark:border-amber-900 bg-primary-foreground dark:bg-background":
+                        activeId == note.id,
+                    }
+                  )}
+                  onClick={() => setActiveNote(note.id)}
+                >
+                  <CardHeader>
+                    <CardTitle className="line-clamp-1">
+                      {note.title || "Untitled"}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div
+                      className="line-clamp-3 text-sm w-auto overflow-hidden text-muted-foreground pr-6"
+                      dangerouslySetInnerHTML={{ __html: note.content }}
+                    ></div>
+
+                    <div className="absolute bottom-2 right-2">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="cursor-pointer" asChild>
+                          <Button
+                            size={`icon`}
+                            variant={"outline"}
+                            className="rounded-full"
+                          >
+                            <EllipsisVertical />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem
+                            onClick={() => handleDuplicate(note.id)}
+                          >
+                            <Copy /> Duplicate
+                          </DropdownMenuItem>
+
+                          <DropdownMenuItem onClick={() => togglePin(note.id)}>
+                            <Pin /> Unpin
+                          </DropdownMenuItem>
+
+                          <DropdownMenuItem
+                            className="text-destructive hover:!text-destructive/70"
+                            onClick={() => deleteNote(note.id)}
+                          >
+                            <Trash2 className="hover:!text-destructive" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+              <hr className="border-t border-e-amber-100  my-2" />
+            </>
+          )}
+
+          {otherNotes.map((note) => (
             <Card
+              key={note.id}
               className={cn(
                 "shadow-xs relative w- gap-2 hover:border-black dark:hover:border-amber-800 h-[140px]",
                 {
@@ -67,7 +141,6 @@ const LeftSidebar = () => {
                     activeId == note.id,
                 }
               )}
-              key={note.id}
               onClick={() => setActiveNote(note.id)}
             >
               <CardHeader>
@@ -80,6 +153,7 @@ const LeftSidebar = () => {
                   className="line-clamp-3 text-sm w-auto overflow-hidden text-muted-foreground pr-6"
                   dangerouslySetInnerHTML={{ __html: note.content }}
                 ></div>
+
                 <div className="absolute bottom-2 right-2">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="cursor-pointer" asChild>
@@ -97,6 +171,11 @@ const LeftSidebar = () => {
                       >
                         <Copy /> Duplicate
                       </DropdownMenuItem>
+
+                      <DropdownMenuItem onClick={() => togglePin(note.id)}>
+                        <Pin /> Pin
+                      </DropdownMenuItem>
+
                       <DropdownMenuItem
                         className="text-destructive hover:!text-destructive/70"
                         onClick={() => deleteNote(note.id)}

@@ -34,12 +34,12 @@ const Layout = () => {
             <SheetTitle>Menu</SheetTitle>
             <SheetDescription>
               <LeftSidebar />
-            </SheetDescription>
+            </SheetDescription> 
           </SheetHeader>
         </SheetContent>
       </Sheet>
 
-      <div className="border-r  border-black dark:border-amber-900 p-4 md:block hidden">
+      <div className="border-r  border-black dark:border-amber-900 p-4  md:block hidden">
         <LeftSidebar />
       </div>
       <div className="col-span-3 border-r border-black dark:border-amber-900 p-6">
