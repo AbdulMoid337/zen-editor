@@ -21,7 +21,7 @@ const LeftSidebar = () => {
   const [search, setSearch] = useState("");
 
   const filtered = notes.filter((note) =>
-    note.title.toLowerCase().includes(search.toLowerCase())
+    note.title && note.content.toLowerCase().includes(search.toLowerCase())
   );
 
   const pinnedNotes = filtered.filter((n) => n.pinned);
