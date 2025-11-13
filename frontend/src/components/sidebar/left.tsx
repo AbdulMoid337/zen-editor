@@ -12,7 +12,7 @@ import { useDataStore } from "@/stores/data.store";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ModeToggle } from "../theme.toggle";
+import { ModeToggle } from "../theme.toggle"; 
 
 const LeftSidebar = () => {
   const { notes, activeId, setActiveNote, deleteNote, createNote, togglePin } =
