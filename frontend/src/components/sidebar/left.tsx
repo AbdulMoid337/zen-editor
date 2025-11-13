@@ -20,8 +20,9 @@ const LeftSidebar = () => {
 
   const [search, setSearch] = useState("");
 
-  const filtered = notes.filter((note) =>
-    note.title && note.content.toLowerCase().includes(search.toLowerCase())
+  const filtered = notes.filter(
+    (note) =>
+      note.title && note.content.toLowerCase().includes(search.toLowerCase())
   );
 
   const pinnedNotes = filtered.filter((n) => n.pinned);
@@ -66,7 +67,7 @@ const LeftSidebar = () => {
               <div className=" px-2">
                 <div className=" flex ">
                   <Pin size={20} />
-                  <span className="text-xs font-bold pl-1.5">fefd</span>
+                  <span className="text-xs font-bold pl-1.5">Pinned bhai</span>
                 </div>
               </div>
               {pinnedNotes.map((note) => (
@@ -105,20 +106,24 @@ const LeftSidebar = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                           <DropdownMenuItem
+                            className="cursor-pointer"
                             onClick={() => handleDuplicate(note.id)}
                           >
                             <Copy /> Duplicate
                           </DropdownMenuItem>
 
-                          <DropdownMenuItem onClick={() => togglePin(note.id)}>
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={() => togglePin(note.id)}
+                          >
                             <Pin /> Unpin
                           </DropdownMenuItem>
 
                           <DropdownMenuItem
-                            className="text-destructive hover:!text-destructive/70"
+                            className="text-destructive cursor-pointer"
                             onClick={() => deleteNote(note.id)}
                           >
-                            <Trash2 className="hover:!text-destructive" />
+                            <Trash2 className="" />
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -167,20 +172,24 @@ const LeftSidebar = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem
+                        className="cursor-pointer"
                         onClick={() => handleDuplicate(note.id)}
                       >
                         <Copy /> Duplicate
                       </DropdownMenuItem>
 
-                      <DropdownMenuItem onClick={() => togglePin(note.id)}>
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => togglePin(note.id)}
+                      >
                         <Pin /> Pin
                       </DropdownMenuItem>
 
                       <DropdownMenuItem
-                        className="text-destructive hover:!text-destructive/70"
+                        className="text-destructiv cursor-pointer"
                         onClick={() => deleteNote(note.id)}
                       >
-                        <Trash2 className="hover:!text-destructive" />
+                        <Trash2 className="" />
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>

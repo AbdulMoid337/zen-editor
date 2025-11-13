@@ -34,7 +34,7 @@ export const useEditorConfig = ({
 }: Props) => {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ codeBlock: false, code: false }),
+      StarterKit.configure({ codeBlock: false, code: false }), 
       CodeBlockLowlight.configure({
         lowlight,
         defaultLanguage: "javascript",
@@ -100,7 +100,7 @@ export const useEditorConfig = ({
     const incoming = initialContent.trim();
 
     if (current !== incoming) {
-      editor.commands.setContent(initialContent, false);
+     editor.commands.setContent(initialContent, { emitUpdate: false });
     }
   }, [initialContent, editor]);
 

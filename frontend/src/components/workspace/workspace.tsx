@@ -11,9 +11,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const Workspace = ({ note }: { note: Note }) => {
   const { updateNote } = useDataStore();
   const [slashCommandOpen, setSlashCommandOpen] = useState(false);
-  const [slashCommandPosition, setSlashCommandPosition] = useState({ 
-    top: 0, 
-    left: 0 
+  const [slashCommandPosition, setSlashCommandPosition] = useState({
+    top: 0,
+    left: 0,
   });
 
   const editor = useEditorConfig({
@@ -116,41 +116,43 @@ const Workspace = ({ note }: { note: Note }) => {
 
     if (slashCommandOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [slashCommandOpen, editor]);
 
   if (!editor) return null;
 
   return (
-   <ScrollArea className="flex-1 h-screen"> 
-  <div className="max-w-4xl mx-auto px-4 py-8 h-full overflow-hidden">
-    <Title
-      title={note.title}
-      setTitle={(newTitle: string) => updateNote(note.id, { title: newTitle })}
-    />
-    
-    <div className="relative h-full flex flex-col">
-      <Toolbar editor={editor} onToggle={toggle} />
-
-      {/* Scrollable editor section */}
-      <div className="relative flex-1 overflow-y-auto rounded-lg border border-black dark:border-amber-900 mt-4">
-        <EditorContent
-          editor={editor}
-          className="prose prose-slate dark:prose-invert max-w-none focus:outline-none p-4 min-h-[500px]"
+    <ScrollArea className="flex-1 h-screen">
+      <div className="max-w-4xl mx-auto px-4 py-8 h-full overflow-hidden">
+        <Title
+          title={note.title}
+          setTitle={(newTitle: string) =>
+            updateNote(note.id, { title: newTitle })
+          }
         />
 
-        <SlashCommandDropdown
-          editor={editor}
-          isOpen={slashCommandOpen}
-          onClose={() => setSlashCommandOpen(false)}
-          position={slashCommandPosition}
-        />
+        <div className="relative h-full flex flex-col">
+          <Toolbar editor={editor} onToggle={toggle} />
+
+          {/* Scrollable editor section */}
+          <div className="relative flex-1 overflow-y-auto rounded-lg border border-black dark:border-amber-900 mt-4">
+            <EditorContent
+              editor={editor}
+              className="prose prose-slate dark:prose-invert max-w-none focus:outline-none p-4 min-h-[500px]"
+            />
+
+            <SlashCommandDropdown
+              editor={editor}
+              isOpen={slashCommandOpen}
+              onClose={() => setSlashCommandOpen(false)}
+              position={slashCommandPosition}
+            />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</ScrollArea>
-
+    </ScrollArea>
   );
 };
 
