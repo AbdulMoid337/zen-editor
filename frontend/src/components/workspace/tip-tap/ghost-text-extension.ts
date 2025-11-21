@@ -67,13 +67,11 @@ export const GhostTextExtension = Extension.create<GhostTextOptions>({
           const { selection } = state;
           const currentPos = selection.from;
 
-          // Only accept if cursor is at the ghost text position
           if (currentPos !== ghostTextPosition) {
             return false;
           }
 
           if (dispatch) {
-            // Insert the ghost text at the current position
             tr.insertText(ghostText, currentPos);
             // Clear ghost text
             this.storage.ghostText = null;
@@ -96,7 +94,6 @@ export const GhostTextExtension = Extension.create<GhostTextOptions>({
           apply: (tr, _set, _oldState, newState) => {
             const { ghostText, ghostTextPosition } = extension.storage;
 
-            // Clear decorations if ghost text is cleared
             if (!ghostText || ghostTextPosition === null) {
               return DecorationSet.empty;
             }
@@ -104,15 +101,12 @@ export const GhostTextExtension = Extension.create<GhostTextOptions>({
             const { selection } = newState;
             const currentPos = selection.from;
 
-            // Check if the transaction changed the document (user typed something)
             if (tr.docChanged) {
-              // Check if text was inserted at or after the ghost text position
               const textAfterPosition = newState.doc.textBetween(
                 ghostTextPosition,
                 currentPos
               );
 
-              // If there's text after the ghost text position, user is typing - clear ghost text
               if (textAfterPosition.length > 0) {
                 extension.storage.ghostText = null;
                 extension.storage.ghostTextPosition = null;
@@ -121,12 +115,10 @@ export const GhostTextExtension = Extension.create<GhostTextOptions>({
               }
             }
 
-            // Only show ghost text if cursor is at the ghost text position
             if (currentPos !== ghostTextPosition) {
               return DecorationSet.empty;
             }
 
-            // Create a widget decoration that shows the ghost text after the cursor
             const widgetDecoration = Decoration.widget(
               currentPos,
               () => {
@@ -155,25 +147,16 @@ export const GhostTextExtension = Extension.create<GhostTextOptions>({
             if (!ghostText || ghostTextPosition === null) {
               return false;
             }
-
             const { selection } = view.state;
             const currentPos = selection.from;
-
-            // Only handle if cursor is at ghost text position
             if (currentPos !== ghostTextPosition) {
               return false;
             }
-
-            // Handle Tab to accept ghost text
             if (event.key === "Tab") {
               event.preventDefault();
               const { state, dispatch } = view;
-
-              // Insert ghost text
               const tr = state.tr.insertText(ghostText, currentPos);
               dispatch(tr);
-
-              // Clear ghost text
               extension.storage.ghostText = null;
               extension.storage.ghostTextPosition = null;
               extension.options.onClearGhostText?.();
@@ -181,7 +164,6 @@ export const GhostTextExtension = Extension.create<GhostTextOptions>({
               return true;
             }
 
-            // Handle Escape to dismiss ghost text
             if (event.key === "Escape") {
               event.preventDefault();
               extension.storage.ghostText = null;
@@ -190,20 +172,15 @@ export const GhostTextExtension = Extension.create<GhostTextOptions>({
               view.dispatch(view.state.tr);
               return true;
             }
-
-            // For typing, let it proceed normally (decoration logic will clear ghost text)
             return false;
           },
           handleTextInput: (_view, from, _to, _text) => {
             const { ghostText, ghostTextPosition } = extension.storage;
-
-            // If user types and there's ghost text, clear it
             if (ghostText && ghostTextPosition !== null && from === ghostTextPosition) {
               extension.storage.ghostText = null;
               extension.storage.ghostTextPosition = null;
               extension.options.onClearGhostText?.();
             }
-
             return false;
           },
         },
