@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { Editor } from "@tiptap/react";
 import { cn } from "@/lib/utils";
 import { aiService } from "@/components/services/ai-service.ts";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,7 +14,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
 import {
   AlignLeft,
   AlignCenter,
@@ -34,7 +32,6 @@ import {
   Palette,
   Link,
 } from "lucide-react";
-
 import {
   getPlatform,
   TOOLBAR_ACTIONS,
@@ -145,7 +142,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
   }, [editor]);
 
   const handleAICommand = async (
-    command: "summarize" | "expand" | "improve"
+    command: "summarize" | "expand" | "improve" | "autocomplete"
   ) => {
     const text = getSelectedText();
     if (!text.trim())
@@ -211,7 +208,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
             "animate-in fade-in-0 zoom-in-95 duration-200"
           )}
         >
-          {["summarize", "expand", "improve"].map((cmd) => (
+          {["summarize", "expand", "improve", "autocomplete"].map((cmd) => (
             <DropdownMenuItem
               key={cmd}
               disabled={isProcessingAI}

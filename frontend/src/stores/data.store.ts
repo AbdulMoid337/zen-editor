@@ -1,4 +1,3 @@
-// stores/data.store.ts (or wherever your store file lives)
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";

@@ -45,6 +45,10 @@ class AIService {
   async improve(text: string): Promise<AIResponse> {
     return this.request("/ai/improve", { text });
   }
+
+  async autocomplete(text: string): Promise<AIResponse> {
+    return this.request("/ai/autocomplete", { text });
+  }
 }
 
 export const aiService = new AIService();

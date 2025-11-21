@@ -102,6 +102,33 @@ app.post("/api/ai/improve", async (req: Request, res: Response) => {
   }
 });
 
+app.post("/api/ai/autocomplete", async (req: Request, res: Response) => {
+  try {
+    const { text } = req.body as { text: string };
+    if (!text?.trim()) {
+      return res.status(400).json({ success: false, error: "Text is required" });
+    }
+
+    const prompt = `
+    You are an AI writing assistant.
+    Continue writing the following text naturally.
+    Keep the same tone and context.
+    DO NOT rewrite the text, only continue it.
+    DO NOT add explanations.
+
+    TEXT TO CONTINUE:
+    "${text}"
+    `;
+
+    const continuation = await generateAIResponse(prompt, text);
+
+    res.json({ success: true, data: continuation });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`✅ Server running on http://localhost:${port}`);
 });
