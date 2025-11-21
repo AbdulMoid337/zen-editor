@@ -363,10 +363,10 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               key === "alignLeft"
                 ? AlignLeft
                 : key === "alignCenter"
-                ? AlignCenter
-                : key === "alignRight"
-                ? AlignRight
-                : AlignJustify;
+                  ? AlignCenter
+                  : key === "alignRight"
+                    ? AlignRight
+                    : AlignJustify;
             return (
               <DropdownMenuItem
                 key={key}
@@ -397,14 +397,14 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               key === "heading1"
                 ? Heading1
                 : key === "heading2"
-                ? Heading2
-                : key === "heading3"
-                ? Heading3
-                : key === "heading4"
-                ? Heading4
-                : key === "heading5"
-                ? Heading5
-                : Heading6;
+                  ? Heading2
+                  : key === "heading3"
+                    ? Heading3
+                    : key === "heading4"
+                      ? Heading4
+                      : key === "heading5"
+                        ? Heading5
+                        : Heading6;
             return (
               <DropdownMenuItem
                 key={key}

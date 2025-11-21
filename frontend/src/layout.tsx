@@ -34,7 +34,7 @@ const Layout = () => {
             <SheetTitle>Menu</SheetTitle>
             <SheetDescription>
               <LeftSidebar />
-            </SheetDescription> 
+            </SheetDescription>
           </SheetHeader>
         </SheetContent>
       </Sheet>
