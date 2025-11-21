@@ -499,3 +499,16 @@ a {
     text-decoration: underline;
   }
 }
+
+/* Ghost text styling for AI autocomplete suggestions */
+.ghost-text {
+  color: #9ca3af !important; /* light gray */
+  opacity: 0.6;
+  pointer-events: none;
+  user-select: none;
+}
+
+.dark .ghost-text {
+  color: #6b7280 !important; /* slightly lighter gray for dark mode */
+  opacity: 0.7;
+}

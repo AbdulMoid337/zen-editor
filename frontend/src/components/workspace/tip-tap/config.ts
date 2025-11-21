@@ -10,6 +10,7 @@ import Code from "@tiptap/extension-code";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import { SlashCommandExtension } from "../slashcommands/slash-command-extension";
+import { GhostTextExtension } from "./ghost-text-extension";
 import { useEffect, useMemo } from "react";
 import { TextStyle, Color } from "@tiptap/extension-text-style";
 import Link from "@tiptap/extension-link";
@@ -34,7 +35,12 @@ export const useEditorConfig = ({
 }: Props) => {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ codeBlock: false, code: false }), 
+      StarterKit.configure({ 
+        codeBlock: false, 
+        code: false,
+        link: false,
+        underline: false,
+      }), 
       CodeBlockLowlight.configure({
         lowlight,
         defaultLanguage: "javascript",
@@ -59,6 +65,7 @@ export const useEditorConfig = ({
           onCloseSlashCommand: () => {},
         }
       ),
+      GhostTextExtension,
       TextStyle,
       Color.configure({
         types: ["textStyle"],
