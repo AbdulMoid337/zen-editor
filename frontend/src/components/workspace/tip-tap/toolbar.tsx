@@ -148,16 +148,13 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
 
     let text: string;
     if (command === "autocomplete") {
-      // For autocomplete, get text before cursor (context)
       const { from } = editor.state.selection;
-      // Get last 500 characters before cursor for context
       const startPos = Math.max(0, from - 500);
       text = editor.state.doc.textBetween(startPos, from, "\n");
       if (!text.trim()) {
         return alert("Please type some text to use autocomplete");
       }
     } else {
-      // For other commands, get selected text
       text = getSelectedText();
       if (!text.trim()) {
         return alert("Please select some text to use AI commands");
@@ -171,14 +168,10 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
 
       if (result?.success && result.data) {
         if (command === "autocomplete") {
-          // For autocomplete, use ghost text instead of direct replacement
           const { from } = editor.state.selection;
-          // Clear any existing ghost text first
           (editor.commands as any).clearGhostText();
-          // Set new ghost text at current cursor position
           (editor.commands as any).setGhostText(result.data, from);
         } else {
-          // For other commands, replace selected text directly
           replaceSelectedText(result.data);
         }
       } else {
