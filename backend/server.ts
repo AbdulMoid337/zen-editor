@@ -22,7 +22,7 @@ const generateAIResponse = async (prompt: string, text: string): Promise<string>
       contents: `${prompt}\n\n${text}`,
     });
 
-    const result = response.text ?? ""; 
+    const result = response.text ?? "";
 
     if (!result.trim()) {
       throw new Error("Empty response from Gemini API");
@@ -111,6 +111,11 @@ app.post("/api/ai/autocomplete", async (req: Request, res: Response) => {
 
     const prompt = `
     You are an AI writing assistant.
+
+   Task:
+   Continue the following text. DO NOT rewrite or repeat any part of the original text.
+   Return ONLY the NEW continuation. Do NOT include explanations, headings, or bullet points.
+
     keep the previous text same
     and Continue writing the following text naturally.
     Keep the same tone and context.
