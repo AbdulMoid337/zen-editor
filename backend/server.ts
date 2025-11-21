@@ -111,7 +111,8 @@ app.post("/api/ai/autocomplete", async (req: Request, res: Response) => {
 
     const prompt = `
     You are an AI writing assistant.
-    Continue writing the following text naturally.
+    keep the previous text same
+    and Continue writing the following text naturally.
     Keep the same tone and context.
     DO NOT rewrite the text, only continue it.
     DO NOT add explanations.
