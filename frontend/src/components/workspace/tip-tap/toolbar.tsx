@@ -70,7 +70,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
   const [isProcessingAI, setIsProcessingAI] = useState(false);
 
   const alignActions = TOOLBAR_ACTIONS.filter((a) =>
-    ["alignLeft", "alignCenter", "alignRight", "alignJustify"].includes(a.key)
+    ["alignLeft", "alignCenter", "alignRight", "alignJustify"].includes(a.key),
   );
 
   const headingActions = TOOLBAR_ACTIONS.filter((a) =>
@@ -81,13 +81,13 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
       "heading4",
       "heading5",
       "heading6",
-    ].includes(a.key)
+    ].includes(a.key),
   );
 
   const baseActions = TOOLBAR_ACTIONS.filter(
     (a) =>
       ![...alignActions, ...headingActions].some((x) => x.key === a.key) &&
-      a.key !== "highlight"
+      a.key !== "highlight",
   );
 
   const highlightAction = TOOLBAR_ACTIONS.find((a) => a.key === "highlight");
@@ -142,7 +142,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
   }, [editor]);
 
   const handleAICommand = async (
-    command: "summarize" | "expand" | "improve" | "autocomplete"
+    command: "summarize" | "expand" | "improve" | "autocomplete",
   ) => {
     if (!editor) return;
 
@@ -195,9 +195,9 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
             disabled={isProcessingAI}
             className={cn(
               "relative h-9 px-4 rounded-xl flex items-center gap-2 font-medium",
-              "bg-gradient-to-r from-purple-200 to-purple-500 dark:from-purple-900 dark:to-purple-700",
+              "bg-linear-to-r from-purple-200 to-purple-500 dark:from-purple-900 dark:to-purple-700",
               "text-slate-900 dark:text-slate-100 hover:from-purple-200 hover:to-purple-300 dark:hover:from-purple-800 dark:hover:to-purple-600",
-              "transition-all duration-300 ease-out shadow-sm hover:shadow-md cursor-pointer"
+              "transition-all duration-300 ease-out shadow-sm hover:shadow-md cursor-pointer",
             )}
           >
             {isProcessingAI ? (
@@ -224,7 +224,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
           className={cn(
             "w-44 p-2 rounded-xl shadow-xl border border-purple-200/40 dark:border-purple-800/50",
             "bg-white/80 dark:bg-slate-900/90 backdrop-blur-lg",
-            "animate-in fade-in-0 zoom-in-95 duration-200"
+            "animate-in fade-in-0 zoom-in-95 duration-200",
           )}
         >
           {["summarize", "expand", "improve", "autocomplete"].map((cmd) => (
@@ -235,7 +235,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               className={cn(
                 "flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium",
                 "text-slate-700 dark:text-slate-200 hover:bg-purple-100/60 dark:hover:bg-purple-800/40",
-                "transition-all duration-200 cursor-pointer"
+                "transition-all duration-200 cursor-pointer",
               )}
             >
               <Sparkles
@@ -260,14 +260,14 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               title={`${label} (${hotkey})`}
               className={cn(
                 isActive ? activeClass : inactiveClass,
-                "flex items-center justify-center cursor-pointer rounded-md h-9 px-4 text-sm font-medium"
+                "flex items-center justify-center cursor-pointer rounded-md h-9 px-4 text-sm font-medium",
               )}
             >
               <Icon size={16} />
               <span className="hidden sm:inline">{label}</span>
             </Button>
           );
-        }
+        },
       )}
 
       {highlightAction && (
@@ -280,7 +280,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
                 editor?.isActive("highlight")
                   ? highlightAction.activeClass
                   : highlightAction.inactiveClass,
-                "flex items-center justify-center rounded-md h-9 cursor-pointer px-4 text-sm font-medium"
+                "flex items-center justify-center rounded-md h-9 cursor-pointer px-4 text-sm font-medium",
               )}
             >
               <Highlighter size={16} />
@@ -302,7 +302,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
                     "w-8 h-8 p-0 rounded-md border-2 transition-all cursor-pointer hover:scale-110",
                     editor?.isActive("highlight", { color })
                       ? "border-slate-900 dark:border-slate-100 shadow-md"
-                      : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+                      : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600",
                   )}
                   style={{ backgroundColor: color }}
                   onClick={() => handleHighlightColor(color)}
@@ -322,7 +322,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               editor?.getAttributes("textStyle")?.color
                 ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                 : "text-slate-700 dark:text-slate-200",
-              "flex items-center justify-center rounded-md h-9 cursor-pointer px-4 text-sm font-medium"
+              "flex items-center justify-center rounded-md h-9 cursor-pointer px-4 text-sm font-medium",
             )}
             title="Text color"
           >
@@ -344,7 +344,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
                   "w-8 h-8 p-0 rounded-md border-2 transition-all cursor-pointer hover:scale-110",
                   editor?.isActive("textStyle", { color })
                     ? "border-slate-900 dark:border-slate-100 shadow-md"
-                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600",
                 )}
                 style={{ backgroundColor: color }}
                 onClick={() => handleTextColor(color)}

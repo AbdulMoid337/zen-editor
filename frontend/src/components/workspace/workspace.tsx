@@ -7,6 +7,7 @@ import SlashCommandDropdown from "./slashcommands/slash-command-dropdown";
 import type { ToolbarAction } from "./tip-tap/toolbar_actions";
 import { useDataStore, type Note } from "@/stores/data.store";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { BubbleMenuComponent } from "./tip-tap/bubble-menu-component";
 
 const Workspace = ({ note }: { note: Note }) => {
   const { updateNote } = useDataStore();
@@ -104,7 +105,7 @@ const Workspace = ({ note }: { note: Note }) => {
           break;
       }
     },
-    [editor]
+    [editor],
   );
 
   useEffect(() => {
@@ -135,8 +136,7 @@ const Workspace = ({ note }: { note: Note }) => {
 
         <div className="relative h-full flex flex-col">
           <Toolbar editor={editor} onToggle={toggle} />
-
-          {/* Scrollable editor section */}
+          <BubbleMenuComponent editor={editor} />
           <div className="relative flex-1 overflow-y-auto rounded-lg border border-black dark:border-amber-900 mt-4">
             <EditorContent
               editor={editor}

@@ -1,4 +1,5 @@
 import { useEditor } from "@tiptap/react";
+import BubbleMenu from "@tiptap/extension-bubble-menu";
 import StarterKit from "@tiptap/starter-kit";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
@@ -35,18 +36,20 @@ export const useEditorConfig = ({
 }: Props) => {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ 
-        codeBlock: false, 
+      StarterKit.configure({
+        codeBlock: false,
         code: false,
         link: false,
         underline: false,
-      }), 
+      }),
       CodeBlockLowlight.configure({
         lowlight,
         defaultLanguage: "javascript",
         exitOnTripleEnter: false,
       }),
-
+      BubbleMenu.configure({
+        pluginKey: "bubbleMenu",
+      }),
       Highlight.configure({ multicolor: true }),
       Placeholder.configure({
         placeholder: "Write, press '/' for commands...",
@@ -63,7 +66,7 @@ export const useEditorConfig = ({
         slashCommandOptions || {
           onSlashCommand: () => {},
           onCloseSlashCommand: () => {},
-        }
+        },
       ),
       GhostTextExtension,
       TextStyle,
@@ -107,7 +110,7 @@ export const useEditorConfig = ({
     const incoming = initialContent.trim();
 
     if (current !== incoming) {
-     editor.commands.setContent(initialContent, { emitUpdate: false });
+      editor.commands.setContent(initialContent, { emitUpdate: false });
     }
   }, [initialContent, editor]);
 
@@ -120,7 +123,7 @@ export const useEditorConfig = ({
       currentColor: () =>
         editor?.getAttributes("textStyle")?.color as string | undefined,
     }),
-    [editor]
+    [editor],
   );
 
   return Object.assign(editor!, { colorAPI });
