@@ -288,7 +288,7 @@ export default function SlashCommandDropdown({
       <div
         id="slash-listbox"
         role="listbox"
-        className="max-h-[320px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent"
+        className="`max-h-80 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent"
       >
         {filteredCommands.length > 0 ? (
           <ul className="space-y-1">
@@ -342,7 +342,7 @@ export default function SlashCommandDropdown({
         )}
       </div>
 
-      <div className="h-2 bg-gradient-to-t from-foreground/10 to-transparent" />
+      <div className="h-2 bg-linear-to-t from-foreground/10 to-transparent" />
     </div>
   );
 }
