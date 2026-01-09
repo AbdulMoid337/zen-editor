@@ -15,19 +15,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Bold,
+  Code2,
   Italic,
-  Underline,
-  Code,
   Link,
-  Highlighter,
   Palette,
-  Quote,
-  List,
-  ListOrdered,
   Sparkles,
-  Type,
-  Link2Off,
+  Underline,
   ChevronDown,
+  Type,
+  List,
+  Link2Off,
   Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -133,27 +130,27 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
     <BubbleMenu
       editor={editor}
       tippyOptions={{
-        duration: 150,
+        duration: 200,
         placement: "top",
-        animation: "shift-toward-subtle",
+        animation: "shift-away",
         maxWidth: "none",
-        zIndex: 100,
+        zIndex: 50,
       }}
       shouldShow={({ editor, state }) => {
         const { from, to } = state.selection;
         const hasSelection = from !== to;
         return hasSelection && !editor.isActive("codeBlock");
       }}
-      className="flex items-center gap-1 rounded-xl border border-border/50 bg-background/95 backdrop-blur-md p-1.5 shadow-2xl ring-1 ring-black/5 dark:ring-white/10"
+      className="flex items-center gap-0.5 rounded-full border border-border/40 bg-background/80 backdrop-blur-xl p-1 shadow-2xl ring-1 ring-black/5 dark:ring-white/10"
     >
       {/* Text Formatting */}
       <Button
-        size="sm"
+        size="icon"
         variant="ghost"
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={cn(
-          "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-          editor.isActive("bold") && "bg-accent text-accent-foreground",
+          "h-8 w-8 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+          editor.isActive("bold") && "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm",
         )}
         title="Bold"
       >
@@ -161,12 +158,12 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
       </Button>
 
       <Button
-        size="sm"
+        size="icon"
         variant="ghost"
         onClick={() => editor.chain().focus().toggleItalic().run()}
         className={cn(
-          "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-          editor.isActive("italic") && "bg-accent text-accent-foreground",
+          "h-8 w-8 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+          editor.isActive("italic") && "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm",
         )}
         title="Italic"
       >
@@ -174,12 +171,12 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
       </Button>
 
       <Button
-        size="sm"
+        size="icon"
         variant="ghost"
         onClick={() => editor.chain().focus().toggleUnderline().run()}
         className={cn(
-          "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-          editor.isActive("underline") && "bg-accent text-accent-foreground",
+          "h-8 w-8 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+          editor.isActive("underline") && "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm",
         )}
         title="Underline"
       >
@@ -187,19 +184,19 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
       </Button>
 
       <Button
-        size="sm"
+        size="icon"
         variant="ghost"
         onClick={() => editor.chain().focus().toggleCode().run()}
         className={cn(
-          "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-          editor.isActive("code") && "bg-accent text-accent-foreground",
+          "h-8 w-8 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+          editor.isActive("code") && "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm",
         )}
         title="Inline Code"
       >
-        <Code className="h-4 w-4" />
+        <Code2 className="h-4 w-4" />
       </Button>
 
-      <Separator orientation="vertical" className="h-6 mx-1" />
+      <div className="h-4 w-[1px] bg-border/60 mx-1" />
 
       {/* Heading Dropdown */}
       <DropdownMenu>
@@ -208,28 +205,33 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
             size="sm"
             variant="ghost"
             className={cn(
-              "h-8 px-2 hover:bg-accent transition-all duration-150 gap-1",
+              "h-8 px-2 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200 gap-1 font-medium text-xs",
               (editor.isActive("heading") || editor.isActive("paragraph")) &&
-                "bg-accent text-accent-foreground",
+              "text-foreground",
             )}
             title="Text Style"
           >
-            <Type className="h-4 w-4" />
-            <ChevronDown className="h-3 w-3" />
+            <span className="opacity-70">
+              {editor.isActive("heading", { level: 1 }) ? "H1" :
+                editor.isActive("heading", { level: 2 }) ? "H2" :
+                  editor.isActive("heading", { level: 3 }) ? "H3" : "P"}
+            </span>
+            <ChevronDown className="h-3 w-3 opacity-50" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="start"
-          className="w-44 bg-background/95 backdrop-blur-md"
+          sideOffset={8}
+          className="w-40 p-1 rounded-xl bg-background/95 backdrop-blur-xl border border-border/50 shadow-xl"
         >
           <DropdownMenuItem
             onClick={() => editor.chain().focus().setParagraph().run()}
             className={cn(
-              "cursor-pointer",
-              editor.isActive("paragraph") && "bg-accent",
+              "rounded-lg cursor-pointer",
+              editor.isActive("paragraph") && "bg-accent/50",
             )}
           >
-            <Type className="h-4 w-4 mr-2" />
+            <Type className="h-4 w-4 mr-2 opacity-70" />
             <span>Paragraph</span>
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -237,87 +239,99 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
             className={cn(
-              "cursor-pointer text-xl font-bold",
-              editor.isActive("heading", { level: 1 }) && "bg-accent",
+              "rounded-lg cursor-pointer",
+              editor.isActive("heading", { level: 1 }) && "bg-accent/50",
             )}
           >
-            Heading 1
+            <div className="flex items-center">
+              <span className="font-bold text-lg mr-2">H1</span>
+              <span>Heading 1</span>
+            </div>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
             className={cn(
-              "cursor-pointer text-lg font-bold",
-              editor.isActive("heading", { level: 2 }) && "bg-accent",
+              "rounded-lg cursor-pointer",
+              editor.isActive("heading", { level: 2 }) && "bg-accent/50",
             )}
           >
-            Heading 2
+            <div className="flex items-center">
+              <span className="font-bold text-base mr-2">H2</span>
+              <span>Heading 2</span>
+            </div>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
             className={cn(
-              "cursor-pointer text-base font-bold",
-              editor.isActive("heading", { level: 3 }) && "bg-accent",
+              "rounded-lg cursor-pointer",
+              editor.isActive("heading", { level: 3 }) && "bg-accent/50",
             )}
           >
-            Heading 3
+            <div className="flex items-center">
+              <span className="font-bold text-sm mr-2">H3</span>
+              <span>Heading 3</span>
+            </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <div className="h-4 w-[1px] bg-border/60 mx-1" />
 
       {/* Highlight Color Picker */}
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            size="sm"
+            size="icon"
             variant="ghost"
             className={cn(
-              "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-              editor.isActive("highlight") &&
-                "bg-accent text-accent-foreground",
+              "h-8 w-8 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+              editor.isActive("highlight") && "bg-primary/20 text-primary-foreground",
             )}
             title="Highlight"
           >
-            <Highlighter className="h-4 w-4" />
+            <div
+              className="h-4 w-4 rounded-full border-2 border-current"
+              style={{
+                backgroundColor: editor.getAttributes("highlight").color || 'transparent',
+                borderColor: editor.isActive('highlight') ? 'transparent' : 'currentColor'
+              }}
+            />
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-3 bg-background/95 backdrop-blur-md"
+          className="w-auto p-2 bg-background/95 backdrop-blur-xl border-border/50 rounded-xl shadow-xl"
           align="start"
+          sideOffset={8}
         >
           <div className="space-y-2">
-            <p className="text-xs font-medium text-muted-foreground mb-2">
-              Highlight Color
-            </p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-6 gap-1">
               {HIGHLIGHT_COLORS.map((item) => (
                 <button
                   key={item.color}
                   onClick={() => handleHighlightColor(item.color)}
                   className={cn(
-                    "w-8 h-8 rounded-md border-2 transition-all duration-150 hover:scale-110",
+                    "w-6 h-6 rounded-full border transition-all duration-150 hover:scale-110",
                     editor.isActive("highlight", { color: item.color })
-                      ? "border-foreground ring-2 ring-ring"
-                      : "border-border",
+                      ? "border-primary ring-1 ring-ring"
+                      : "border-transparent",
                   )}
                   style={{ backgroundColor: item.color }}
                   title={item.name}
                 />
               ))}
             </div>
-            {editor.isActive("highlight") && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => editor.chain().focus().unsetHighlight().run()}
-                className="w-full mt-2 text-xs"
-              >
-                Remove Highlight
-              </Button>
-            )}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => editor.chain().focus().unsetHighlight().run()}
+              className="w-full text-xs h-7 rounded-lg text-muted-foreground hover:text-foreground"
+            >
+              Clear
+            </Button>
           </div>
         </PopoverContent>
       </Popover>
@@ -325,126 +339,86 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            size="sm"
+            size="icon"
             variant="ghost"
             className={cn(
-              "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-              editor.getAttributes("textStyle")?.color &&
-                "bg-accent text-accent-foreground",
+              "h-8 w-8 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+              editor.getAttributes("textStyle")?.color && "bg-accent/50",
             )}
             title="Text Color"
           >
-            <Palette className="h-4 w-4" />
+            <Palette className="h-4 w-4" style={{ color: editor.getAttributes("textStyle")?.color }} />
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-3 bg-background/95 backdrop-blur-md"
+          className="w-auto p-2 bg-background/95 backdrop-blur-xl border-border/50 rounded-xl shadow-xl"
           align="start"
+          sideOffset={8}
         >
           <div className="space-y-2">
-            <p className="text-xs font-medium text-muted-foreground mb-2">
-              Text Color
-            </p>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-1">
               {TEXT_COLORS.map((item) => (
                 <button
                   key={item.color}
                   onClick={() => handleTextColor(item.color)}
                   className={cn(
-                    "w-8 h-8 rounded-md border-2 transition-all duration-150 hover:scale-110",
+                    "w-6 h-6 rounded-full border transition-all duration-150 hover:scale-110",
                     editor.getAttributes("textStyle")?.color === item.color
-                      ? "border-foreground ring-2 ring-ring"
-                      : "border-border",
+                      ? "border-primary ring-1 ring-ring"
+                      : "border-transparent",
                   )}
                   style={{ backgroundColor: item.color }}
                   title={item.name}
                 />
               ))}
             </div>
-            {editor.getAttributes("textStyle")?.color && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleUnsetColor}
-                className="w-full mt-2 text-xs"
-              >
-                Reset Color
-              </Button>
-            )}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleUnsetColor}
+              className="w-full text-xs h-7 rounded-lg text-muted-foreground hover:text-foreground"
+            >
+              Default
+            </Button>
           </div>
         </PopoverContent>
       </Popover>
 
-      <Separator orientation="vertical" className="h-6 mx-1" />
+      <div className="h-4 w-[1px] bg-border/60 mx-1" />
 
-      {/* Block Formatting */}
+      {/* Basic Blocks */}
       <Button
-        size="sm"
-        variant="ghost"
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={cn(
-          "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-          editor.isActive("blockquote") && "bg-accent text-accent-foreground",
-        )}
-        title="Quote"
-      >
-        <Quote className="h-4 w-4" />
-      </Button>
-
-      <Button
-        size="sm"
+        size="icon"
         variant="ghost"
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={cn(
-          "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-          editor.isActive("bulletList") && "bg-accent text-accent-foreground",
+          "h-8 w-8 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+          editor.isActive("bulletList") && "bg-primary text-primary-foreground hover:bg-primary/90",
         )}
         title="Bullet List"
       >
         <List className="h-4 w-4" />
       </Button>
 
-      <Button
-        size="sm"
-        variant="ghost"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={cn(
-          "h-8 w-8 p-0 hover:bg-accent transition-all duration-150",
-          editor.isActive("orderedList") && "bg-accent text-accent-foreground",
-        )}
-        title="Ordered List"
-      >
-        <ListOrdered className="h-4 w-4" />
-      </Button>
-
-      <Separator orientation="vertical" className="h-6 mx-1" />
+      <div className="h-4 w-[1px] bg-border/60 mx-1" />
 
       {/* Link */}
-      {!editor.isActive("link") ? (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={setLink}
-          className="h-8 w-8 p-0 hover:bg-accent transition-all duration-150"
-          title="Add Link"
-        >
-          <Link className="h-4 w-4" />
-        </Button>
-      ) : (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={removeLink}
-          className="h-8 w-8 p-0 hover:bg-destructive hover:text-destructive-foreground transition-all duration-150 bg-accent text-accent-foreground"
-          title="Remove Link"
-        >
-          <Link2Off className="h-4 w-4" />
-        </Button>
-      )}
+      <Button
+        size="icon"
+        variant="ghost"
+        onClick={editor.isActive("link") ? removeLink : setLink}
+        className={cn(
+          "h-8 w-8 rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+          editor.isActive("link") && "bg-primary text-primary-foreground hover:bg-primary/90",
+        )}
+        title={editor.isActive("link") ? "Remove Link" : "Add Link"}
+      >
+        {editor.isActive("link") ? <Link2Off className="h-4 w-4" /> : <Link className="h-4 w-4" />}
+      </Button>
 
-      <Separator orientation="vertical" className="h-6 mx-1" />
+      <div className="h-4 w-[1px] bg-border/60 mx-1" />
 
-      {/* AI Commands Dropdown - FIXED */}
+      {/* AI */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -452,7 +426,7 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
             variant="ghost"
             disabled={isProcessingAI}
             className={cn(
-              "h-8 px-2 hover:bg-accent transition-all duration-150 gap-1",
+              "h-8 px-2 rounded-full transition-all duration-200 gap-1 text-purple-600 hover:bg-purple-100 dark:text-purple-400 dark:hover:bg-purple-900/40",
               isProcessingAI && "opacity-50 cursor-not-allowed",
             )}
             title="AI Tools"
@@ -462,12 +436,12 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
             ) : (
               <Sparkles className="h-4 w-4" />
             )}
-            <ChevronDown className="h-3 w-3" />
+            <span className="text-xs font-semibold">AI</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-44 bg-background/95 backdrop-blur-md"
+          className="w-48 bg-background/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-xl p-1"
           sideOffset={8}
         >
           <DropdownMenuItem
@@ -476,9 +450,9 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
               handleAICommand("improve");
             }}
             disabled={isProcessingAI}
-            className="cursor-pointer focus:bg-accent"
+            className="rounded-lg cursor-pointer focus:bg-purple-100 dark:focus:bg-purple-900/30"
           >
-            <Sparkles className="h-4 w-4 mr-2" />
+            <Sparkles className="h-4 w-4 mr-2 text-purple-500" />
             <span>Improve Writing</span>
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -487,9 +461,9 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
               handleAICommand("summarize");
             }}
             disabled={isProcessingAI}
-            className="cursor-pointer focus:bg-accent"
+            className="rounded-lg cursor-pointer focus:bg-purple-100 dark:focus:bg-purple-900/30"
           >
-            <Sparkles className="h-4 w-4 mr-2" />
+            <Sparkles className="h-4 w-4 mr-2 text-purple-500" />
             <span>Summarize</span>
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -498,9 +472,9 @@ export const BubbleMenuComponent = ({ editor }: BubbleMenuComponentProps) => {
               handleAICommand("expand");
             }}
             disabled={isProcessingAI}
-            className="cursor-pointer focus:bg-accent"
+            className="rounded-lg cursor-pointer focus:bg-purple-100 dark:focus:bg-purple-900/30"
           >
-            <Sparkles className="h-4 w-4 mr-2" />
+            <Sparkles className="h-4 w-4 mr-2 text-purple-500" />
             <span>Expand Text</span>
           </DropdownMenuItem>
         </DropdownMenuContent>

@@ -443,43 +443,60 @@
   pointer-events: none;
 }
 
-/* Custom scrollbar styles for the slash command dropdown */
-.scrollbar-thin {
-  scrollbar-width: thin;
+html {
+  scroll-behavior: smooth;
+  overflow-y: overlay;
 }
 
-.scrollbar-thumb-slate-300::-webkit-scrollbar-thumb {
-  background-color: rgb(203 213 225);
-  border-radius: 9999px;
+/* Global Creative Scrollbar - Hidden by default, appears on hover */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.scrollbar-thumb-slate-600::-webkit-scrollbar-thumb {
-  background-color: rgb(71 85 105);
-  border-radius: 9999px;
-}
-
-.scrollbar-track-transparent::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  border-radius: 9999px;
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 20px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.2s ease;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(148 163 184);
+:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.4);
 }
 
-.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(51 65 85);
+.dark :hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.8) !important;
+  border-width: 2px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Utilities */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 code {
@@ -502,13 +519,15 @@ a {
 
 /* Ghost text styling for AI autocomplete suggestions */
 .ghost-text {
-  color: #9ca3af !important; /* light gray */
+  color: #9ca3af !important;
+  /* light gray */
   opacity: 0.6;
   pointer-events: none;
   user-select: none;
 }
 
 .dark .ghost-text {
-  color: #6b7280 !important; /* slightly lighter gray for dark mode */
+  color: #6b7280 !important;
+  /* slightly lighter gray for dark mode */
   opacity: 0.7;
 }

@@ -3,7 +3,21 @@ import type { MouseEvent as ReactMouseEvent } from "react";
 import { Editor } from "@tiptap/react";
 import { SLASH_COMMANDS, type SlashCommand } from "./slash-commands";
 import { cn } from "@/lib/utils";
-import { Search, X } from "lucide-react";
+import {
+  Heading1,
+  Heading2,
+  Heading3,
+  List,
+  ListOrdered,
+  Text,
+  Code,
+  CheckSquare,
+  Quote,
+  Minus,
+  Search,
+  X,
+  Code2,
+} from "lucide-react";
 
 type Position = { top: number; left: number };
 
@@ -234,6 +248,22 @@ export default function SlashCommandDropdown({
     searchInputRef.current?.focus();
   }, []);
 
+  const getIcon = (key: string) => {
+    switch (key) {
+      case "paragraph": return <Text size={18} />;
+      case "heading1": return <Heading1 size={18} />;
+      case "heading2": return <Heading2 size={18} />;
+      case "heading3": return <Heading3 size={18} />;
+      case "bulletList": return <List size={18} />;
+      case "orderedList": return <ListOrdered size={18} />;
+      case "taskList": return <CheckSquare size={18} />;
+      case "blockquote": return <Quote size={18} />;
+      case "codeBlock": return <Code2 size={18} />;
+      case "horizontalRule": return <Minus size={18} />;
+      default: return <Text size={18} />;
+    }
+  };
+
   if (!isOpen) return null;
 
   const activeId =
@@ -246,49 +276,41 @@ export default function SlashCommandDropdown({
         position: "absolute",
         top: adjustedPosition.top,
         left: adjustedPosition.left,
-        width: 300,
+        width: 320,
       }}
       className={cn(
-        "z-50 overflow-hidden rounded-2xl border border-border bg-popover/95 shadow-xl backdrop-blur-xl",
+        "z-50 overflow-hidden rounded-2xl border border-border/40 bg-background/90 shadow-2xl backdrop-blur-xl",
         "ring-1 ring-black/5 dark:ring-white/10",
-        "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-150 ease-out",
+        "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200 ease-out",
       )}
       role="dialog"
       aria-label="Slash commands"
     >
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-border bg-linear-to-b from-background/70 to-background/40">
+      <div className="flex items-center gap-2 p-3 pb-2">
         <div className="relative flex-1">
-          <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
           <input
             ref={searchInputRef}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
-            placeholder='Search blocks (e.g. "heading", "list", "code")'
+            placeholder='Type to search...'
             className={cn(
-              "w-full rounded-md border border-border bg-background pl-8 pr-8 py-2 text-sm outline-none transition",
-              "placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-ring focus:border-ring",
+              "w-full rounded-xl border border-border/50 bg-muted/40 pl-9 pr-8 py-2.5 text-sm outline-none transition-all",
+              "placeholder:text-muted-foreground/60 focus:bg-background focus:ring-2 focus:ring-primary/20",
             )}
             aria-autocomplete="list"
             aria-controls="slash-listbox"
             aria-activedescendant={activeId ?? undefined}
           />
-          {searchValue && (
-            <button
-              type="button"
-              onClick={clearSearch}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors cursor-pointer"
-              aria-label="Clear search"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
         </div>
       </div>
+
+      <div className="h-[1px] bg-border/40 mx-3 mb-1" />
 
       <div
         id="slash-listbox"
         role="listbox"
-        className="`max-h-80 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent"
+        className="max-h-[320px] overflow-y-auto p-2 scrollbar-thin scrollbar-track-transparent hover:scrollbar-thumb-muted"
       >
         {filteredCommands.length > 0 ? (
           <ul className="space-y-1">
@@ -307,23 +329,24 @@ export default function SlashCommandDropdown({
                       executeCommand(cmd);
                     }}
                     className={cn(
-                      "group w-full flex items-start gap-3 px-3 py-2.5 rounded-lg text-left cursor-pointer transition-all duration-150",
+                      "group w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left cursor-pointer transition-all duration-200",
                       isActive
-                        ? "bg-accent text-accent-foreground shadow-md ring-1 ring-accent/30 scale-[1.02]"
-                        : "hover:bg-muted/70 hover:text-foreground",
+                        ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-[1.01]"
+                        : "hover:bg-muted/60 hover:text-foreground text-muted-foreground",
                     )}
                   >
-                    <div className="grid place-items-center h-6 w-6 rounded-md bg-muted text-muted-foreground text-[10px] font-semibold shrink-0 group-hover:bg-accent/70 group-hover:text-accent-foreground transition-colors">
-                      {cmd.key.slice(0, 2).toUpperCase()}
+                    <div className={cn(
+                      "grid place-items-center h-8 w-8 rounded-lg shrink-0 transition-colors",
+                      isActive ? "bg-white/20 text-white" : "bg-muted text-foreground group-hover:bg-background group-hover:shadow-sm"
+                    )}>
+                      {getIcon(cmd.key)}
                     </div>
 
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="truncate text-sm font-medium">
-                          {cmd.label}
-                        </span>
+                    <div className="min-w-0 flex-1">
+                      <div className={cn("font-semibold text-sm", isActive ? "text-white" : "text-foreground")}>
+                        {cmd.label}
                       </div>
-                      <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                      <p className={cn("text-xs truncate", isActive ? "text-white/80" : "text-muted-foreground")}>
                         {cmd.description}
                       </p>
                     </div>
@@ -336,13 +359,11 @@ export default function SlashCommandDropdown({
           <div className="py-8 text-center text-sm text-muted-foreground">
             <p>No matching commands</p>
             <p className="mt-1 text-xs text-muted-foreground/80">
-              Try searching for “heading”, “list”, or “code”
+              Try searching for "heading", "list", etc.
             </p>
           </div>
         )}
       </div>
-
-      <div className="h-2 bg-linear-to-t from-foreground/10 to-transparent" />
     </div>
   );
 }

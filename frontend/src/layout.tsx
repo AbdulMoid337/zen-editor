@@ -18,7 +18,7 @@ const Layout = () => {
   const note = notes.find((m) => m.id == activeId);
 
   return (
-    <div className="md:grid h-screen md:grid-cols-5 flex flex-col">
+    <div className="flex flex-col min-h-screen md:flex-row bg-background">
       <Sheet>
         <SheetTrigger asChild className="md:hidden">
           <Button
@@ -32,26 +32,27 @@ const Layout = () => {
         <SheetContent side="left" className="w-full">
           <SheetHeader>
             <SheetTitle>Menu</SheetTitle>
-            <SheetDescription>
-              <LeftSidebar />
+            <SheetDescription className="sr-only">
+              Navigation Menu
             </SheetDescription>
           </SheetHeader>
+          <LeftSidebar isMobile={true} />
         </SheetContent>
       </Sheet>
 
-      <div className="border-r  border-black dark:border-amber-900 p-4  md:block hidden">
+      <div className="hidden md:block sticky top-0 h-screen shrink-0 z-40 self-start bg-sidebar/50 backdrop-blur-xl">
         <LeftSidebar />
       </div>
-      <div className="col-span-3 border-r border-black dark:border-amber-900 p-6">
+      <div className="flex-1 min-w-0 md:border-r border-sidebar-border p-6">
         {note ? (
           <Workspace note={note} />
         ) : (
-          <div className="flex h-full w-full justify-center items-center">
+          <div className="flex h-[80vh] w-full justify-center items-center">
             <Button onClick={createNote}>Create new note</Button>
           </div>
         )}
       </div>
-      <div className="border-l border-black dark:border-amber-900 md:block hidden"></div>
+      <div className="hidden w-[20%] shrink-0 border-l border-sidebar-border md:block sticky top-0 h-screen bg-background/50 backdrop-blur-xl"></div>
     </div>
   );
 };

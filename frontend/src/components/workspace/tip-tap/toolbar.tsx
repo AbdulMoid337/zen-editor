@@ -31,6 +31,7 @@ import {
   Loader2,
   Palette,
   Link,
+  ChevronDown,
 } from "lucide-react";
 import {
   getPlatform,
@@ -187,69 +188,59 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
   };
 
   return (
-    <div className="flex sticky top-0 z-50 bg-background flex-wrap gap-2 border-b pb-4 mb-6 border-black dark:border-amber-900">
+    <div className="flex sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border pb-2 mb-6 flex-wrap gap-1 items-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             disabled={isProcessingAI}
             className={cn(
-              "relative h-9 px-4 rounded-xl flex items-center gap-2 font-medium",
-              "bg-linear-to-r from-purple-200 to-purple-500 dark:from-purple-900 dark:to-purple-700",
-              "text-slate-900 dark:text-slate-100 hover:from-purple-200 hover:to-purple-300 dark:hover:from-purple-800 dark:hover:to-purple-600",
-              "transition-all duration-300 ease-out shadow-sm hover:shadow-md cursor-pointer",
+              "h-8 px-3 rounded-lg flex items-center gap-2 font-medium cursor-pointer transition-all",
+              "text-purple-600 bg-purple-50 hover:bg-purple-100 dark:bg-purple-900/20 dark:text-purple-300 dark:hover:bg-purple-900/40"
             )}
           >
             {isProcessingAI ? (
               <Loader2
-                size={16}
-                className="animate-spin text-purple-700 dark:text-purple-300"
+                size={14}
+                className="animate-spin"
               />
             ) : (
               <Sparkles
-                size={16}
-                className="text-purple-700 dark:text-purple-300"
+                size={14}
               />
             )}
-            <span className="tracking-wide">
+            <span className="text-sm">
               {isProcessingAI ? "Thinking..." : "Ask AI"}
             </span>
-            <div className="absolute inset-0 rounded-xl ring-1 ring-purple-300/30 dark:ring-purple-500/20" />
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent
           align="start"
           sideOffset={6}
-          className={cn(
-            "w-44 p-2 rounded-xl shadow-xl border border-purple-200/40 dark:border-purple-800/50",
-            "bg-white/80 dark:bg-slate-900/90 backdrop-blur-lg",
-            "animate-in fade-in-0 zoom-in-95 duration-200",
-          )}
+          className="w-44 p-1"
         >
           {["summarize", "expand", "improve", "autocomplete"].map((cmd) => (
             <DropdownMenuItem
               key={cmd}
               disabled={isProcessingAI}
               onClick={() => handleAICommand(cmd as any)}
-              className={cn(
-                "flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium",
-                "text-slate-700 dark:text-slate-200 hover:bg-purple-100/60 dark:hover:bg-purple-800/40",
-                "transition-all duration-200 cursor-pointer",
-              )}
+              className="cursor-pointer"
             >
               <Sparkles
-                size={16}
-                className="text-purple-600 dark:text-purple-400"
+                size={14}
+                className="mr-2 text-purple-500"
               />
-              <span>{cmd.charAt(0).toUpperCase() + cmd.slice(1)}</span>
+              <span className="capitalize">{cmd}</span>
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
 
+      <div className="w-[1px] h-6 bg-border mx-1" />
+
       {baseActions.map(
-        ({ key, label, icon: Icon, shortcut, activeClass, inactiveClass }) => {
+        ({ key, label, icon: Icon, shortcut, activeClass }) => {
           const isActive = editor?.isActive(key);
           const hotkey = shortcut[platform];
           return (
@@ -257,56 +248,56 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               key={key}
               onClick={() => onToggle(key)}
               variant="ghost"
+              size="sm"
               title={`${label} (${hotkey})`}
               className={cn(
-                isActive ? activeClass : inactiveClass,
-                "flex items-center justify-center cursor-pointer rounded-md h-9 px-4 text-sm font-medium",
+                "h-8 w-8 p-0 cursor-pointer",
+                isActive && "bg-muted text-foreground"
               )}
             >
               <Icon size={16} />
-              <span className="hidden sm:inline">{label}</span>
             </Button>
           );
         },
       )}
 
+      <div className="w-[1px] h-6 bg-border mx-1" />
+
       {highlightAction && (
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
+              variant="ghost"
+              size="sm"
               title={`${highlightAction.label} (${highlightAction.shortcut[platform]})`}
               className={cn(
-                editor?.isActive("highlight")
-                  ? highlightAction.activeClass
-                  : highlightAction.inactiveClass,
-                "flex items-center justify-center rounded-md h-9 cursor-pointer px-4 text-sm font-medium",
+                "h-8 w-8 p-0 cursor-pointer",
+                editor?.isActive("highlight") && "bg-muted text-foreground"
               )}
             >
               <Highlighter size={16} />
-              <span className="hidden sm:inline">{highlightAction.label}</span>
             </Button>
           </PopoverTrigger>
 
-          <PopoverContent align="start" className="w-auto p-2">
-            <div className="text-xs mb-2 font-medium text-slate-600 dark:text-slate-400">
+          <PopoverContent align="start" className="w-auto p-3">
+            <div className="text-xs mb-2 font-medium text-muted-foreground">
               Highlight Colors
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-1">
               {HIGHLIGHT_COLORS.map(({ name, color }) => (
                 <Button
                   key={name}
                   size="sm"
                   variant="ghost"
                   className={cn(
-                    "w-8 h-8 p-0 rounded-md border-2 transition-all cursor-pointer hover:scale-110",
+                    "w-6 h-6 p-0 rounded-full border transition-all cursor-pointer hover:scale-110",
                     editor?.isActive("highlight", { color })
-                      ? "border-slate-900 dark:border-slate-100 shadow-md"
-                      : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600",
+                      ? "border-primary shadow-sm"
+                      : "border-transparent"
                   )}
                   style={{ backgroundColor: color }}
                   onClick={() => handleHighlightColor(color)}
-                  title={`${name} highlight`}
+                  title={name}
                 />
               ))}
             </div>
@@ -317,94 +308,61 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            variant="outline"
+            variant="ghost"
+            size="sm"
             className={cn(
-              editor?.getAttributes("textStyle")?.color
-                ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100"
-                : "text-slate-700 dark:text-slate-200",
-              "flex items-center justify-center rounded-md h-9 cursor-pointer px-4 text-sm font-medium",
+              "h-8 w-8 p-0 cursor-pointer",
+              editor?.getAttributes("textStyle")?.color && "bg-muted text-foreground"
             )}
             title="Text color"
           >
             <Palette size={16} />
-            <span className="hidden sm:inline">Color</span>
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="start" className="w-auto p-2">
-          <div className="text-xs mb-2 font-medium text-slate-600 dark:text-slate-400">
+        <PopoverContent align="start" className="w-auto p-3">
+          <div className="text-xs mb-2 font-medium text-muted-foreground">
             Text Colors
           </div>
-          <div className="grid grid-cols-5 gap-2 mb-2">
+          <div className="grid grid-cols-5 gap-1 mb-2">
             {TEXT_COLORS.map(({ name, color }) => (
               <Button
                 key={name}
                 size="sm"
                 variant="ghost"
                 className={cn(
-                  "w-8 h-8 p-0 rounded-md border-2 transition-all cursor-pointer hover:scale-110",
+                  "w-6 h-6 p-0 rounded-full border transition-all cursor-pointer hover:scale-110",
                   editor?.isActive("textStyle", { color })
-                    ? "border-slate-900 dark:border-slate-100 shadow-md"
-                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600",
+                    ? "border-primary shadow-sm"
+                    : "border-transparent"
                 )}
                 style={{ backgroundColor: color }}
                 onClick={() => handleTextColor(color)}
-                title={`${name} text`}
+                title={name}
               />
             ))}
           </div>
           <Button
             size="sm"
             variant="outline"
-            className="w-full justify-center text-xs"
+            className="w-full justify-center text-xs h-7 cursor-pointer"
             onClick={handleUnsetColor}
           >
-            Clear color
+            Reset
           </Button>
         </PopoverContent>
       </Popover>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 h-9 px-4 cursor-pointer"
-          >
-            <AlignCenter size={16} />{" "}
-            <span className="hidden sm:inline">Align</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          {alignActions.map(({ key, label }) => {
-            const Icon =
-              key === "alignLeft"
-                ? AlignLeft
-                : key === "alignCenter"
-                  ? AlignCenter
-                  : key === "alignRight"
-                    ? AlignRight
-                    : AlignJustify;
-            return (
-              <DropdownMenuItem
-                key={key}
-                onClick={() => onToggle(key as ToolbarAction)}
-              >
-                <span className="flex items-center gap-2">
-                  <Icon size={16} /> {label}
-                </span>
-              </DropdownMenuItem>
-            );
-          })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="w-[1px] h-6 bg-border mx-1" />
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="outline"
-            className="flex items-center gap-2 h-9 px-4 cursor-pointer"
+            variant="ghost"
+            size="sm"
+            className="h-8 gap-1 px-2 cursor-pointer font-normal"
           >
-            <Heading size={16} />{" "}
-            <span className="hidden sm:inline">Headings</span>
+            <Heading size={16} />
+            <ChevronDown size={12} className="opacity-50" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
@@ -425,45 +383,69 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               <DropdownMenuItem
                 key={key}
                 onClick={() => onToggle(key as ToolbarAction)}
+                className="cursor-pointer"
               >
-                <span className="flex items-center gap-2">
-                  <Icon size={16} /> {label}
-                </span>
+                <Icon size={16} className="mr-2 opacity-70" />
+                {label}
               </DropdownMenuItem>
             );
           })}
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* link */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 gap-1 px-2 cursor-pointer font-normal"
+          >
+            <AlignLeft size={16} />
+            <ChevronDown size={12} className="opacity-50" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {alignActions.map(({ key, label }) => {
+            const Icon =
+              key === "alignLeft"
+                ? AlignLeft
+                : key === "alignCenter"
+                  ? AlignCenter
+                  : key === "alignRight"
+                    ? AlignRight
+                    : AlignJustify;
+            return (
+              <DropdownMenuItem
+                key={key}
+                onClick={() => onToggle(key as ToolbarAction)}
+                className="cursor-pointer"
+              >
+                <Icon size={16} className="mr-2 opacity-70" />
+                {label}
+              </DropdownMenuItem>
+            );
+          })}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="outline"
-            className="flex items-center gap-2 h-9 px-4 cursor-pointer"
+            variant="ghost"
+            size="sm"
+            className="h-8 gap-1 px-2 cursor-pointer font-normal"
           >
-            <Link size={16} /> <span className="hidden sm:inline">Link</span>
+            <Link size={16} />
+            <ChevronDown size={12} className="opacity-50" />
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="start">
-          <DropdownMenuItem asChild>
-            <button
-              onClick={setLink}
-              className="cursor-pointer w-full text-left"
-            >
-              Set Link
-            </button>
+          <DropdownMenuItem onClick={setLink} className="cursor-pointer">
+            Set Link
           </DropdownMenuItem>
-
-          <DropdownMenuItem asChild>
-            <button
-              onClick={() => editor?.chain().focus().unsetLink().run()}
-              className="cursor-pointer w-full text-left"
-            >
-              Unset Link
-            </button>
+          <DropdownMenuItem onClick={() => editor?.chain().focus().unsetLink().run()} className="cursor-pointer">
+            Unset Link
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

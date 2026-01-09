@@ -134,13 +134,13 @@ const Workspace = ({ note }: { note: Note }) => {
           }
         />
 
-        <div className="relative h-full flex flex-col">
+        <div className="relative flex flex-col">
           <Toolbar editor={editor} onToggle={toggle} />
           <BubbleMenuComponent editor={editor} />
-          <div className="relative flex-1 overflow-y-auto rounded-lg border border-black dark:border-amber-900 mt-4">
+          <div className="relative mt-4">
             <EditorContent
               editor={editor}
-              className="prose prose-slate dark:prose-invert max-w-none focus:outline-none p-4 min-h-[500px]"
+              className="prose prose-slate dark:prose-invert max-w-none focus:outline-none min-h-[500px] pb-32"
             />
 
             <SlashCommandDropdown

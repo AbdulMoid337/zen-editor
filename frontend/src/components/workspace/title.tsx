@@ -24,7 +24,8 @@ const Title = ({
       name="title"
       rows={1}
       value={title}
-      className="text-7xl w-full font-bold resize-none overflow-hidden focus:outline-none"
+      placeholder="Untitled"
+      className="text-5xl w-full font-bold resize-none overflow-hidden focus:outline-none bg-transparent placeholder:text-muted-foreground/40 text-foreground"
       onChange={(e) => setTitle(e.target.value)}
     />
   );
