@@ -206,9 +206,9 @@ const LeftSidebar = ({ isMobile = false }: LeftSidebarProps) => {
         <div className="flex flex-col gap-1">
           {pinnedNotes.length > 0 && (
             <div className="mb-4">
-              <div className="flex items-center gap-2 px-3 py-2 text-muted-foreground/70">
+              <div className="flex items-center gap-2 px-3 py-2 text-muted-foreground/90">
                 <Pin className="h-3 w-3" />
-                <span className="text-xs font-semibold uppercase tracking-wider">
+                <span className="text-xs font-bold uppercase tracking-wider">
                   Pinned
                 </span>
               </div>
@@ -229,7 +229,7 @@ const LeftSidebar = ({ isMobile = false }: LeftSidebarProps) => {
           )}
 
           {pinnedNotes.length > 0 && otherNotes.length > 0 && (
-            <div className="px-3 py-2 text-muted-foreground/70 text-xs font-semibold uppercase tracking-wider">
+            <div className="px-3 py-2 text-muted-foreground/90 text-xs font-bold uppercase tracking-wider">
               All Notes
             </div>
           )}
@@ -284,7 +284,7 @@ const NoteCard = ({
         <h3
           className={cn(
             "font-semibold text-sm line-clamp-1 transition-colors",
-            isActive ? "text-sidebar-foreground" : "text-muted-foreground group-hover:text-sidebar-foreground"
+            isActive ? "text-sidebar-foreground" : "text-sidebar-foreground/80 group-hover:text-sidebar-foreground"
           )}
         >
           {note.title || "Untitled Note"}
@@ -294,7 +294,7 @@ const NoteCard = ({
       <div
         className={cn(
           "text-xs line-clamp-2 h-8 leading-relaxed w-full pr-6 transition-colors",
-          isActive ? "text-muted-foreground" : "text-muted-foreground/70 group-hover:text-muted-foreground"
+          isActive ? "text-muted-foreground" : "text-muted-foreground/90 group-hover:text-muted-foreground"
         )}
         dangerouslySetInnerHTML={{ __html: note.content || "<p>No content</p>" }}
       />
