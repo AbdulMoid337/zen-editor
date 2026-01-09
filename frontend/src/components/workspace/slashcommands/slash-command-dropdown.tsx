@@ -10,12 +10,10 @@ import {
   List,
   ListOrdered,
   Text,
-  Code,
   CheckSquare,
   Quote,
   Minus,
   Search,
-  X,
   Code2,
 } from "lucide-react";
 
@@ -242,11 +240,11 @@ export default function SlashCommandDropdown({
     el?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [selectedIndex, isOpen]);
 
-  const clearSearch = useCallback(() => {
-    setSearchValue("");
-    setSelectedIndex(0);
-    searchInputRef.current?.focus();
-  }, []);
+  // const clearSearch = useCallback(() => {
+  //   setSearchValue("");
+  //   setSelectedIndex(0);
+  //   searchInputRef.current?.focus();
+  // }, []);
 
   const getIcon = (key: string) => {
     switch (key) {

@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { BubbleMenu, Editor } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   Popover,
   PopoverContent,

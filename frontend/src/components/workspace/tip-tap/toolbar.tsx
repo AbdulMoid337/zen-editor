@@ -240,7 +240,7 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
       <div className="w-[1px] h-6 bg-border mx-1" />
 
       {baseActions.map(
-        ({ key, label, icon: Icon, shortcut, activeClass }) => {
+        ({ key, label, icon: Icon, shortcut }) => {
           const isActive = editor?.isActive(key);
           const hotkey = shortcut[platform];
           return (
@@ -314,7 +314,6 @@ const Toolbar = ({ editor, onToggle }: ToolbarProps) => {
               "h-8 w-8 p-0 cursor-pointer",
               editor?.getAttributes("textStyle")?.color && "bg-muted text-foreground"
             )}
-            title="Text color"
           >
             <Palette size={16} />
           </Button>
